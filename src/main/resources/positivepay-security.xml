@@ -1,0 +1,110 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	http://www.springframework.org/schema/security
+	http://www.springframework.org/schema/security/spring-security-3.1.xsd
+	http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+    <context:component-scan base-package="com.westernalliancebancorp.positivepay.service" />
+    <context:property-placeholder location="classpath:positivepay.properties"/>
+
+    <http security="none" pattern="/s/logout"/>
+    <http security="none" pattern="/EZTellerInterface/*"/>
+    <http security="none" pattern="/messages/login" />
+    <http security="none" pattern="/static/**" />
+    <http auto-config="true" entry-point-ref="hybridAuthenticationEntryPoint" access-denied-page="/error/403" create-session="stateless">
+        <intercept-url pattern="/user/*" access="ROLE_CORPORATE_ADMIN,ROLE_BANK_ADMIN,ROLE_CORPORATE_USER" />
+        <intercept-url pattern="/job/*" access="ROLE_BANK_ADMIN" />
+        <intercept-url pattern="/report/*" access="ROLE_BANK_ADMIN,ROLE_CORPORATE_ADMIN,ROLE_CORPORATE_USER" />
+        <intercept-url pattern="/admin/*" access="ROLE_BANK_ADMIN" />
+        <intercept-url pattern="/s/logon" access="ROLE_CORPORATE_USER,ROLE_BANK_ADMIN,ROLE_CORPORATE_ADMIN" />
+        <custom-filter ref="transactionManagementFilter" before="PRE_AUTH_FILTER"/>
+        <custom-filter ref="bottomLineAuthenticationFilter" before="LAST"/>
+        <custom-filter ref="positivePayCookiePreAuthenticationFilter" position="PRE_AUTH_FILTER"/>
+        <form-login login-page="/login"
+                    authentication-success-handler-ref="authenticationSuccessHandler"
+                    authentication-failure-url="/login?error=true"
+                    default-target-url="/user/dashboard"/>
+		<logout delete-cookies="${positivepay.affidavit.cookie.name}" invalidate-session="true" success-handler-ref="logoutSuccessHandler" logout-url="/j_spring_security_logout"/>
+		<!-- <remember-me /> -->
+	</http>
+
+    <beans:bean id="loginUrlAuthenticationEntryPoint"
+                class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+        <beans:property name="loginFormUrl" value="/login" />
+    </beans:bean>
+
+    <beans:bean id="bottomLineAuthenticationFilter" class="com.westernalliancebancorp.positivepay.web.security.BottomLineAuthenticationFilter">
+        <beans:property name="authenticationManager" ref="authenticationManager"/>
+        <beans:property name="filterProcessesUrl" value="${positivepay.bottomline.filter.process.url}"/>
+        <beans:property name="authenticationSuccessHandler" ref="authenticationSuccessHandler"/>
+    </beans:bean>
+
+    <beans:bean id="positivePayCookiePreAuthenticationFilter" class="com.westernalliancebancorp.positivepay.web.security.PositivePayCookiePreAuthenticationFilter">
+        <beans:property name="authenticationManager" ref="authenticationManager"/>
+    </beans:bean>
+    
+    <!-- Start LDAP Authentication -->
+	<beans:bean id="contextSource" class="org.springframework.security.ldap.DefaultSpringSecurityContextSource">
+		<beans:constructor-arg value="ldap://westernalliancebancorp.com:389/dc=westernalliancebancorp,dc=com"/>	
+		<beans:property name="userDn" value="CN=ppaytestuser,OU=Service Accounts,OU=WAB Users and Groups,DC=westernalliancebancorp,DC=com"/>		
+		<beans:property name="password" value="9009le,123"/>
+		<beans:property name="baseEnvironmentProperties">
+			<beans:map>
+				<beans:entry key="com.sun.jndi.ldap.connect.timeout" value="6000"/>
+			</beans:map>
+		</beans:property>
+	</beans:bean>
+	
+	<beans:bean id="ppLdapUerDetailsMapper" class="com.westernalliancebancorp.positivepay.web.security.PositivePayLdapUserDetailsMapper">
+        <beans:property name="ldapUserRole" value="ROLE_BANK_ADMIN"/>
+    </beans:bean>
+
+	<beans:bean id="ldapAuthProvider" class="org.springframework.security.ldap.authentication.LdapAuthenticationProvider">
+		<beans:property name="userDetailsContextMapper" ref="ppLdapUerDetailsMapper"/>
+		<beans:constructor-arg>
+			<beans:bean class="org.springframework.security.ldap.authentication.BindAuthenticator">
+			    <beans:constructor-arg ref="contextSource"/>
+			    <beans:property name="userDnPatterns">
+			      <beans:list><beans:value>cn={0},OU=Service Accounts,OU=WAB Users and Groups</beans:value></beans:list>
+			    </beans:property>
+			  </beans:bean>
+			</beans:constructor-arg>
+			<beans:constructor-arg>
+			<beans:bean class="org.springframework.security.ldap.userdetails.DefaultLdapAuthoritiesPopulator">
+			    <beans:constructor-arg ref="contextSource"/>
+			    <beans:constructor-arg value="OU=Security Groups,OU=WAB Users and Groups"/>
+			    <beans:property name="groupRoleAttribute" value="cn"/>
+			    <beans:property name="searchSubtree" value="true"/>
+			    <beans:property name="rolePrefix" value="ROLE_"/>
+				<beans:property name="convertToUpperCase" value="true"/>
+			</beans:bean>
+		</beans:constructor-arg>
+	</beans:bean>
+    <!-- End LDAP Authentication -->   
+
+	<authentication-manager alias="authenticationManager">
+		<!-- <ldap-authentication-provider
+	     		user-search-filter="(cn={0})" 
+	     		user-search-base="OU=Service Accounts,OU=WAB Users and Groups"
+	     		type-search-filter="(member={0})"
+	     		type-search-base="OU=Security Groups,OU=WAB Users and Groups"
+	     		type-role-attribute="cn"
+	       		role-prefix="ROLE_">
+		</ldap-authentication-provider>	 -->
+		<!--<authentication-provider ref="ldapAuthProvider"/>-->
+		
+		<authentication-provider user-service-ref="userDetailsService">
+			<password-encoder hash="md5" />
+            <!--<jdbc-userDetail-service id="jdbcUserService" data-source-ref="dataSource"
+                               userDetails-by-username-query="
+					select username, password, is_active from userDetail where username=?"
+                               authorities-by-username-query="
+					select u.username, r.name as authorities from userDetail u, user_bank_role ubr, role r
+					where u.id = ubr.user_id and ubr.role_id = r.id and u.username =  ? " />-->
+        </authentication-provider>
+        <authentication-provider ref="bottomLineAuthenticationProvider"/>
+	</authentication-manager>
+</beans:beans>

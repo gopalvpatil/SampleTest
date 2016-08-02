@@ -1,0 +1,93 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context   http://www.springframework.org/schema/context/spring-context-3.2.xsd
+	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+	
+	<context:component-scan base-package="com.westernalliancebancorp.positivepay" />
+	<mvc:annotation-driven />
+	<context:annotation-config />
+
+	<!-- Spring Quartz -->	
+
+	<bean name="genericJobDetailBean" class="org.springframework.scheduling.quartz.JobDetailBean" scope="prototype">
+		<property name="jobClass" value="com.westernalliancebancorp.positivepay.job.impl.GenericJobDetailBean" />
+		<property name="applicationContextJobDataKey" value="appContextKey" />
+	</bean>
+	
+	<bean name="checkProcessJobDetailBean" class="org.springframework.scheduling.quartz.JobDetailBean" scope="prototype">
+		<property name="jobClass" value="com.westernalliancebancorp.positivepay.job.impl.CheckProcessJobDetailBean" />
+		<property name="applicationContextJobDataKey" value="appContextKey" />
+	</bean>
+	
+	<bean id="checkProcessTask" class="com.westernalliancebancorp.positivepay.job.impl.CheckProcessTask" />
+
+	<bean id="duplicatePaidProcessTask" class="com.westernalliancebancorp.positivepay.job.impl.DuplicatePaidProcessTask" />
+
+	<bean id="duplicateStopJobTask" class="com.westernalliancebancorp.positivepay.job.impl.DuplicateStopJobTask" />	
+
+	<bean id="invalidAmountJobTask" class="com.westernalliancebancorp.positivepay.job.impl.InvalidAmountJobTask" />
+
+	<bean id="makeStaleJobTask" class="com.westernalliancebancorp.positivepay.job.impl.MakeStaleJobTask" />
+
+	<bean id="paidNotIssuedJobTask" class="com.westernalliancebancorp.positivepay.job.impl.PaidNotIssuedJobTask" />
+
+	<bean id="stopPaidJobTask" class="com.westernalliancebancorp.positivepay.job.impl.StopPaidJobTask" />
+
+	<bean id="stopPresentedJobTask" class="com.westernalliancebancorp.positivepay.job.impl.StopPresentedJobTask" />
+
+	<bean id="stopStatusJobTask" class="com.westernalliancebancorp.positivepay.job.impl.StopStatusJobTask" />
+
+	<bean id="voidPaidJobTask" class="com.westernalliancebancorp.positivepay.job.impl.VoidPaidJobTask" />
+	
+	<bean id="voidStopJobTask" class="com.westernalliancebancorp.positivepay.job.impl.VoidStopJobTask" />
+
+	<bean id="issueFileJobTask" class="com.westernalliancebancorp.positivepay.job.impl.IssueFileJobTask" />
+
+	<bean id="crsPaidFileJobTask" class="com.westernalliancebancorp.positivepay.job.impl.CRSPaidFileJobTask" />
+
+	<bean id="amPaidExceptionsJobTask" class="com.westernalliancebancorp.positivepay.job.impl.AMPaidExceptionsJobTask" />
+
+	<bean id="moveErrorFileJobTask" class="com.westernalliancebancorp.positivepay.job.impl.MoveErrorFileJobTask" />
+
+	<bean id="decisionJobTask" class="com.westernalliancebancorp.positivepay.job.impl.DecisionJobTask" />
+
+	<bean id="pmExceptionsJobTask" class="com.westernalliancebancorp.positivepay.job.impl.PMExceptionsJobTask" />
+
+	<bean id="addAccountToLookupJobTask" class="com.westernalliancebancorp.positivepay.job.impl.AddAccountToLookupJobTask" />
+
+	<bean id="customerFileConvertJobTask" class="com.westernalliancebancorp.positivepay.job.impl.CustomerFileConvertJobTask" />
+
+	<bean id="customerFileLoadJobTask" class="com.westernalliancebancorp.positivepay.job.impl.CustomerFileLoadJobTask" />
+	
+	<bean id="fileCopyJobTask" class="com.westernalliancebancorp.positivepay.job.impl.FileCopyJobTask" />
+
+	<bean id="fileDeleteJobTask" class="com.westernalliancebancorp.positivepay.job.impl.FileDeleteJobTask" />
+	
+	<bean id="fileMoveJobTask" class="com.westernalliancebancorp.positivepay.job.impl.FileMoveJobTask" />
+	
+	<bean id="fileRenameJobTask" class="com.westernalliancebancorp.positivepay.job.impl.FileRenameJobTask" />
+			
+	<bean id="jobHandler" class="com.westernalliancebancorp.positivepay.scheduler.JobHandler">
+		<lookup-method name="createGenericProcessJobDetailBean" bean="genericJobDetailBean"/>
+		<lookup-method name="createCheckProcessJobDetailBean" bean="checkProcessJobDetailBean"/>
+	</bean>
+	
+	<bean id="cronTriggerHandler" class="com.westernalliancebancorp.positivepay.scheduler.CronTriggerHandler"/>
+
+	<bean id="ppScheduler" class="com.westernalliancebancorp.positivepay.scheduler.PositivePaySchedulerFactoryBean"/>
+	
+	<!-- End Job Scheduler-->
+
+    <!-- Task executors -->
+    <bean id="threadPoolExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolExecutorFactoryBean" >
+        <property name="corePoolSize" value="5"/>
+        <property name="maxPoolSize" value="10"/>
+        <property name="threadNamePrefix" value="FTP_FILE_FETCHING_THREAD"/>
+    </bean>
+    <!-- executors complete -->
+
+</beans>

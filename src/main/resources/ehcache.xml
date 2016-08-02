@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ 		 xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd" updateCheck="false" monitoring="autodetect"
+         dynamicConfig="true">
+	
+	 <!-- Sets the path to the directory where cache .data files are created.
+
+         If the path is a Java System Property it is replaced by
+         its value in the running VM.
+
+         The following properties are translated:
+         user.home - User's home directory
+         user.dir - User's current working directory
+         java.io.tmpdir - Default temp file path -->
+         
+	<diskStore path="java.io.tmpdir" />
+
+	   <!--Default Cache configuration. These will applied to caches programmatically created through
+        the CacheManager.
+
+        The following attributes are required for defaultCache:
+
+        maxInMemory       - Sets the maximum number of objects that will be created in memory
+        eternal           - Sets whether elements are eternal. If eternal,  timeouts are ignored and the element
+                            is never expired.
+        timeToIdleSeconds - Sets the time to idle for an element before it expires.
+                            i.e. The maximum amount of time between accesses before an element expires
+                            Is only used if the element is not eternal.
+                            Optional attribute. A value of 0 means that an Element can idle for infinity
+        timeToLiveSeconds - Sets the time to live for an element before it expires.
+                            i.e. The maximum time between creation time and when an element expires.
+                            Is only used if the element is not eternal.
+        overflowToDisk    - Sets whether elements can overflow to disk when the in-memory cache
+                            has reached the maxInMemory limit.
+
+        -->	
+	
+	<defaultCache 
+	    eternal="true" 
+	    maxElementsInMemory="1000"
+	    overflowToDisk="false" 
+	    diskPersistent="false" 
+	    timeToIdleSeconds="0"
+	    timeToLiveSeconds="0" 
+	    memoryStoreEvictionPolicy="LRU">
+        <cacheEventListenerFactory  class="com.westernalliancebancorp.positivepay.utility.cache.PositivePayCacheEventListenerFactory" listenFor="all"/>
+            </defaultCache>
+	
+	<cache name="JobStatusType" 
+	    eternal="true"
+	    maxElementsInMemory="20" 
+	    overflowToDisk="false" 
+	    diskPersistent="false"
+	    timeToIdleSeconds="0" 
+	    timeToLiveSeconds="0"
+	    memoryStoreEvictionPolicy="LRU"  />
+	
+	<cache name="JobType" 
+	    eternal="true"
+	    maxElementsInMemory="20" 
+	    overflowToDisk="false" 
+	    diskPersistent="false"
+	    timeToIdleSeconds="0" 
+	    timeToLiveSeconds="0"
+	    memoryStoreEvictionPolicy="LRU" /> 
+	    
+	<cache name="JobActionType" 
+	    eternal="true"
+	    maxElementsInMemory="20" 
+	    overflowToDisk="false" 
+	    diskPersistent="false"
+	    timeToIdleSeconds="0" 
+	    timeToLiveSeconds="0"
+	    memoryStoreEvictionPolicy="LRU" /> 
+	    
+	<cache name="CheckStatus" 
+	    eternal="true"
+	    maxElementsInMemory="20" 
+	    overflowToDisk="false" 
+	    diskPersistent="false"
+	    timeToIdleSeconds="0" 
+	    timeToLiveSeconds="0"
+	    memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="Permission"
+           eternal="true"
+           maxElementsInMemory="200"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="LinkageType"
+           eternal="true"
+           maxElementsInMemory="200"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="userPermissions"
+           eternal="false"
+           maxElementsInMemory="3000"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="18000"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="userRolesAndPermissions"
+           eternal="false"
+           maxElementsInMemory="300"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="1800"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="displayableCheckStatuses"
+           eternal="false"
+           maxElementsInMemory="300"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="1800"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="userRoles"
+           eternal="false"
+           maxElementsInMemory="3000"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="180000"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="fileTypeByName"
+           eternal="true"
+           maxElementsInMemory="3000"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="0"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="userCompany"
+           eternal="false"
+           maxElementsInMemory="3000"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="180000"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="fileMappingByFileMappingIdAndCompanyId"
+           eternal="false"
+           maxElementsInMemory="3000"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="180000"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="checkStatusByNameAndVersion"
+           eternal="false"
+           maxElementsInMemory="3000"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="180000"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="findAllCompanies"
+           eternal="false"
+           maxElementsInMemory="3000"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="180000"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="companyDtosByBankId"
+           eternal="false"
+           maxElementsInMemory="3000"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="14400"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="itemCodeCache"
+           eternal="true"
+           maxElementsInMemory="3000"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="180000"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="findAllByBankId"
+           eternal="false"
+           maxElementsInMemory="10000"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="14400"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="ExceptionStatusJpaDao.findByName"
+           eternal="true"
+           maxElementsInMemory="10000"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="14400"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="ItemType.findByCode"
+           eternal="true"
+           maxElementsInMemory="10000"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="14400"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="findJobStatusTypeByCode"
+           eternal="true"
+           maxElementsInMemory="10000"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="14400"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="findAllJobStatusTypes"
+           eternal="true"
+           maxElementsInMemory="10000"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="14400"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="findJobTypeById"
+           eternal="true"
+           maxElementsInMemory="10000"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="14400"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="findJobActionTypeById"
+           eternal="true"
+           maxElementsInMemory="10000"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="14400"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="findJobActionTypeByJobTypeId"
+           eternal="true"
+           maxElementsInMemory="10000"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="14400"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="getItemCodeFromReferenceDataItemType"
+           eternal="true"
+           maxElementsInMemory="10000"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="14400"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="findAllBanks"
+           eternal="false"
+           maxElementsInMemory="10000"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="14400"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="findByAssignedBankNumber"
+           eternal="false"
+           maxElementsInMemory="10000"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="14400"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="findAllJobStepsBy"
+           eternal="false"
+           maxElementsInMemory="10000"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="14400"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="getAccountFromAccountNumberAndAssignedBankNumber"
+           eternal="false"
+           maxElementsInMemory="10000"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="14400"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="getUserAccountsByCompanyId"
+           eternal="false"
+           maxElementsInMemory="10000"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="14400"
+           memoryStoreEvictionPolicy="LRU" />
+
+</ehcache>

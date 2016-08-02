@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AmountInvalidSubSubReport" pageWidth="802" pageHeight="555" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenResourceMissingType="Empty">
+	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="pageHeader"/>
+    <property name="net.sf.jasperreports.export.csv.exclude.origin.band.2" value="pageFooter"/>	
+    <property name="net.sf.jasperreports.export.csv.exclude.origin.band.3" value="lastPageFooter"/>	
+    <property name="net.sf.jasperreports.export.csv.record.delimiter" value="&#x0D;&#x0A;"/>
+    <property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="account_name" class="java.lang.String"/>
+	<parameter name="account_number" class="java.lang.String"/>
+	<parameter name="account_id" class="java.lang.Integer"/>
+	<parameter name="in_as_of_date" class="java.util.Date"/>
+	<queryString>
+		<![CDATA[SELECT
+     			payment.check_number AS check_number,
+     			payment.exception_type AS exception_type,
+     			payment.exception_status AS exception_status,
+     			payment.paid_date AS paid_date,
+     			payment.exception_type_resolved_date AS resolution_date,
+     			payment.resolution_action AS resolution,
+     			payment.payee AS payee,
+     			payment.issued_date AS issued_date,
+     			payment.check_status AS status_name,
+     			payment.paid_amount AS check_amount
+			FROM 
+				vw_check_items_group payment
+			WHERE
+                payment.account_number = $P{account_number}
+			AND payment.exception_create_date <= $P{in_as_of_date}
+			AND payment.check_status LIKE 'invalid%']]>
+	</queryString>
+	<field name="check_number" class="java.lang.String"/>
+	<field name="exception_type" class="java.lang.String"/>
+	<field name="exception_status" class="java.lang.String"/>
+	<field name="paid_date" class="java.sql.Timestamp"/>
+	<field name="resolution_date" class="java.sql.Timestamp"/>
+	<field name="resolution" class="java.lang.String"/>
+	<field name="payee" class="java.lang.String"/>
+	<field name="issued_date" class="java.sql.Timestamp"/>
+	<field name="check_amount" class="java.math.BigDecimal"/>
+	<variable name="check_count" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{check_number}]]></variableExpression>
+		<initialValueExpression><![CDATA[new Integer("0")]]></initialValueExpression>
+	</variable>
+	<variable name="issued_amount_sum" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{check_amount}]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double("0.00")]]></initialValueExpression>
+	</variable>
+
+	<detail>
+		<band height="20" splitType="Immediate">
+			<textField>
+				<reportElement x="0" y="0" width="70" height="20" forecolor="#000000"/>
+				<textElement textAlignment="Right">
+					<font fontName="Verdana"/>
+				</textElement>
+				<textFieldExpression>
+					<![CDATA[($F{check_number} == null) ? "N/A" : $F{check_number}]]>
+				</textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="0" width="160" height="20" forecolor="#000000"/>
+				<textElement>
+					<font fontName="Verdana"/>
+				</textElement>
+				<textFieldExpression>
+					<![CDATA[($F{exception_type} == null) ? "N/A" : $F{exception_type}]]>
+				</textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="250" y="0" width="100" height="20" forecolor="#000000"/>
+				<textElement>
+					<font fontName="Verdana"/>
+				</textElement>
+				<textFieldExpression>
+					<![CDATA[($F{paid_date} == null) ? "N/A" : new SimpleDateFormat("MM/dd/yyyy").format($F{paid_date})]]>
+				</textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="360" y="0" width="100" height="20" forecolor="#000000"/>
+				<textElement textAlignment="Center">
+					<font fontName="Verdana"/>
+				</textElement>
+				<textFieldExpression>
+					<![CDATA[($F{resolution_date} == null) ? "N/A" : new SimpleDateFormat("MM/dd/yyyy").format($F{resolution_date})]]>
+				</textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="470" y="0" width="120" height="20" forecolor="#000000"/>
+				<textElement textAlignment="Center">
+					<font fontName="Verdana"/>
+				</textElement>
+				<textFieldExpression>
+					<![CDATA[($F{resolution} == null) ? "N/A" : $F{resolution}]]>
+				</textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="600" y="0" width="100" height="20" forecolor="#000000"/>
+				<textElement textAlignment="Center">
+					<font fontName="Verdana"/>
+				</textElement>
+				<textFieldExpression>
+					<![CDATA[($F{exception_status} == null) ? "N/A" : $F{exception_status}]]>
+				</textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="710" y="0" width="92" height="20" forecolor="#000000"/>
+				<textElement textAlignment="Right">
+					<font fontName="Verdana"/>
+				</textElement>
+				<textFieldExpression>
+					<![CDATA[($F{check_amount} == null) ? "N/A" : new java.text.DecimalFormat("$ #,##0.00").format($F{check_amount})]]>
+				</textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<lastPageFooter>
+		<band height="22">
+			<textField>
+				<reportElement x="80" y="0" width="710" height="20" forecolor="#2090AA"/>
+				<textElement>
+					<font fontName="Verdana" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression>"Total for Account: " + $P{account_number} + " - " + $P{account_name} + ": [" + $V{check_count} + " Items - " + (($V{issued_amount_sum} == null) ? "N/A" : new java.text.DecimalFormat("$ #,##0.00").format($V{issued_amount_sum})) + "]"</textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+</jasperReport>

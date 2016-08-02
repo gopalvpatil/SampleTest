@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <aop:aspectj-autoproxy/>
+    <context:annotation-config/>
+    <context:property-placeholder location="classpath:positivepay.properties"/>    
+    <bean id="ppAdapterMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+     
+     	<qualifier value="adapterMarshaller" />
+        <property name="contextPaths">
+            <array>
+                <value>com.harlandfs.ezteller.nativepositivepay</value>               
+            </array>
+        </property>
+    </bean>
+    
+    <bean id="webServiceTemplate" class="org.springframework.ws.client.core.WebServiceTemplate">	    
+	    <property name="marshaller" ref="ppAdapterMarshaller" />
+		<property name="unmarshaller" ref="ppAdapterMarshaller" />
+	</bean>
+	
+    <bean id="ezTellerPositivePayEndpoint" class="com.westernalliancebancorp.positivepay.web.endpoint.EZTellerPositivePayEndpoint"/>
+    
+    <bean id="applicationServiceAdapter" class="org.springframework.ws.server.endpoint.adapter.GenericMarshallingMethodEndpointAdapter">
+        <description>Enables the MessageDispatchServlet to invoke methods requiring OXM marshalling.</description>
+        <constructor-arg ref="ppAdapterMarshaller"/>
+    </bean>
+    
+	<bean class="org.springframework.ws.server.endpoint.mapping.PayloadRootAnnotationMethodEndpointMapping"> 
+		<property name="interceptors"> 
+		<list>
+			<bean class="com.westernalliancebancorp.positivepay.web.interceptor.PositivePaySoapEnvelopeLoggingInterceptor"></bean> 
+			<bean class="com.westernalliancebancorp.positivepay.web.interceptor.EZTellerPositivePayEndpointInterceptor"></bean>
+		</list>
+		</property> 
+	</bean> 	
+    
+</beans>

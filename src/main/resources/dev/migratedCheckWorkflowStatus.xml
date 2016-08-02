@@ -1,0 +1,15 @@
+<pos:workflow version="1000.00" xmlns:pos="http://v1.jaxb.positivepay.westernalliancebancorp.com"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="checkWorkflowstatus.xsd">
+    <pos:status name="start" description="Start" isExceptionalStatus="false">
+        <documentation/>
+        <pos:action name="created" description="Created" targetStatusName="open"/>
+    </pos:status>
+    <pos:status name="open" description="Open" isExceptionalStatus="false">
+        <documentation/>
+        <pos:action name="close" description="Close" targetStatusName="closed"/>
+    </pos:status>
+    <pos:status name="closed" description="Closed" isExceptionalStatus="false">
+        <documentation/>
+    </pos:status>
+</pos:workflow>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PaymentsCompletedReportCompanySum" pageWidth="802" pageHeight="555" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenResourceMissingType="Empty">
+	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="pageHeader"/>
+    <property name="net.sf.jasperreports.export.csv.exclude.origin.band.2" value="pageFooter"/>	
+    <property name="net.sf.jasperreports.export.csv.exclude.origin.band.3" value="lastPageFooter"/>	
+    <property name="net.sf.jasperreports.export.csv.record.delimiter" value="&#x0D;&#x0A;"/>
+    <property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="in_as_of_date" class="java.util.Date"/>
+	<parameter name="in_account_ids" class="java.lang.String"/>
+	<parameter name="in_company_id" class="java.lang.Long"/>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+     		count(check_detail.check_number) AS check_count_by_company,
+     		0+COALESCE(sum(check_detail.issued_amount),0) AS check_amount_by_company
+			FROM vw_check_items_group check_detail
+			WHERE check_detail.payment_status  = 'Paid'
+			AND check_detail.company_id = $P{in_company_id}
+			AND check_detail.account_id IN $P!{in_account_ids}
+			]]>
+	</queryString>
+	<field name="check_count_by_company" class="java.lang.Long"/>
+	<field name="check_amount_by_company" class="java.math.BigDecimal"/>
+
+	<detail>
+		<band height="22" splitType="Immediate">
+			<textField>
+				<reportElement x="80" y="0" width="700" height="20" forecolor="#006887"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Verdana" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression>"Totals For Customer: [" + $F{check_count_by_company} + " Items - " + new java.text.DecimalFormat("$ #,##0.00").format($F{check_amount_by_company}) + "]"</textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

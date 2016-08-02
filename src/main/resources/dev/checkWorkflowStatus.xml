@@ -1,0 +1,333 @@
+<pos:workflow version="1000.00" xmlns:pos="http://v1.jaxb.positivepay.westernalliancebancorp.com"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="checkWorkflowstatus.xsd">
+    <!--Optional:-->
+    <documentation/>
+    <pos:status name="start" description="Start" onArrivalCallback="workFlowStartstatusImpl" isExceptionalStatus="false">
+        <documentation/>
+        <pos:action name="created" description="Created" targetStatusName="issued"/>
+        <pos:action name="paidNotIssued" description="Paid, Not Issued" targetStatusName="paidNotIssued" preExecutionCallback="referenceDataStatusUpdate"/>
+        <pos:action name="stopNotIssued" description="Stop, not Issued" targetStatusName="stopNotIssued" preExecutionCallback="referenceDataStatusUpdate"/>
+        <pos:action name="stop" description="Stop" targetStatusName="stop" preExecutionCallback="referenceDataStatusUpdate"/>
+        <pos:action name="void" description="Void" targetStatusName="void"/>
+    </pos:status>
+
+    <pos:status name="issued" description="Issued"  onArrivalCallback="issuedStatusArrivalCallback" isExceptionalStatus="false">
+        <documentation/>
+        <pos:action name="void" description="Void" targetStatusName="void"/>
+        <pos:action name="matched" description="Paid" targetStatusName="paid"  preExecutionCallback="referenceDataStatusUpdate"/>
+        <pos:action name="invalidAmountPaid" description="Invalid amount paid" targetStatusName="invalidAmountPaid" preExecutionCallback="referenceDataStatusUpdate"/>
+        <pos:action name="invalidAmountStop" description="Invalid amount stop" targetStatusName="invalidAmountStop" preExecutionCallback="referenceDataStatusUpdate"/>
+        <pos:action name="stop" description="Stop" targetStatusName="stop" preExecutionCallback="referenceDataStatusUpdate"/>
+        <pos:action name="stale" description="Stale" targetStatusName="stale"/>
+    </pos:status>
+
+    <pos:status name="void" description="Void" onArrivalCallback="voidStatusArrivalCallback" isExceptionalStatus="false">
+        <pos:action name="voidPaid" description="Void, pay" targetStatusName="voidPaid" preExecutionCallback="referenceDataStatusUpdate"/>
+        <pos:action name="stopAfterVoid" description="Stop after void" targetStatusName="stopAfterVoid" preExecutionCallback="referenceDataStatusUpdate"/>
+        <pos:action name="voidNotIssued" description="Void, not issued" targetStatusName="voidNotIssued"/>
+        <pos:action name="issuedAfterVoid" description="Issued After Void" targetStatusName="issuedAfterVoid"/>
+    </pos:status>
+
+    <pos:status name="issuedAfterVoid" description="Issued After Void" onArrivalCallback="issuedAfterVoidStatusArrivalAndDepartureCallback" onDepartureCallback="issuedAfterVoidStatusArrivalAndDepartureCallback" isExceptionalStatus="false">
+        <pos:action name="issued" description="Issued" targetStatusName="issued" isAdminAction="true"/>
+    </pos:status>
+
+    <pos:status name="voidPaid" description="Void, Paid" onArrivalCallback="voidPaidStatusArrivalAndDepartureCallback" onDepartureCallback="voidPaidStatusArrivalAndDepartureCallback" isExceptionalStatus="true">
+        <pos:action name="pay" description="Pay" targetStatusName="paid"/>
+        <pos:action name="noPay" description="No pay" preExecutionCallback="adjustAmountAndReferenceDataNullifier" targetStatusName="void"/>
+        <pos:action name="changeAccountNumber" description="Change Account number"
+                    targetStatusName="voidPaidAccountNumberChanged" isAdminAction="true"/>
+        <pos:action name="changeCheckNumber" description="Change Check number"
+                    targetStatusName="voidPaidCheckNumberChanged" isAdminAction="true"/>
+        <pos:action name="changeCurrentCheckNumber" description="Change Current Check number"
+                    targetStatusName="voidPaidChangeCurrentCheckNumber" isAdminAction="true"/>
+        <pos:action name="changeCurrentAccountNumber" description="Change Current Account number"
+                    targetStatusName="voidPaidChangeCurrentAccountNumber" isAdminAction="true"/>
+    </pos:status>
+
+    <pos:status name="end" description="End" isExceptionalStatus="false"/>
+
+    <pos:status name="voidPaidAccountNumberChanged" description="Void paid, account number changed" onArrivalCallback="voidPaidAccountNumberChanged" isExceptionalStatus="false">
+        <pos:action description="Misread account number" name="misreadAccountNumber" targetStatusName="void" preExecutionCallback="referenceDataStatusUpdate"/>
+    </pos:status>
+
+    <pos:status name="voidPaidCheckNumberChanged" description="Void paid, check number changed" onArrivalCallback="voidPaidCheckNumberChanged" isExceptionalStatus="false">
+        <pos:action description="Misread check number" name="misreadCheckNumber" targetStatusName="void" preExecutionCallback="referenceDataStatusUpdate"/>
+    </pos:status>
+
+    <pos:status name="voidPaidChangeCurrentCheckNumber" description="Adjusted current check number" onArrivalCallback="voidPaidCurrentCheckNumberChanged" isExceptionalStatus="false">
+        <pos:action description="Move to start" name="moveToStart" targetStatusName="start" preExecutionCallback="referenceDataStatusUpdate"/>
+    </pos:status>
+
+    <pos:status name="voidPaidChangeCurrentAccountNumber" description="Adjusted current account number" onArrivalCallback="voidPaidCurrentAccountNumberChanged" isExceptionalStatus="false">
+        <pos:action description="Move to start" name="moveToStart" targetStatusName="start" preExecutionCallback="referenceDataStatusUpdate"/>
+    </pos:status>
+
+    <pos:status name="stopAfterVoid" description="Stop After Void" onArrivalCallback="stopAfterVoidStatusArrivalCallback" isExceptionalStatus="false">
+        <pos:action name="stop" description="Stop" targetStatusName="stop" />
+    </pos:status>
+   
+    <pos:status name="voidNotIssued" description="Void, not Issued" onArrivalCallback="voidNotIssuedStatusArrivalAndDepartureCallback" onDepartureCallback="voidNotIssuedStatusArrivalAndDepartureCallback" isExceptionalStatus="false">
+        <pos:action name="void" description="Void" targetStatusName="void"/>
+    </pos:status>
+
+    <pos:status name="paid" description="Paid" onArrivalCallback="paidStatusArrivalCallback" onDepartureCallback="paidStatusDepartureCallback" isExceptionalStatus="false">
+        <!--<pos:action name="duplicatePaid" description="Duplicate Paid" targetStatusName="duplicatePaid" preExecutionCallback="referenceDataStatusUpdate"/>-->
+        <pos:action name="stopAfterPaid" description="Stopped After Paid" targetStatusName="stopAfterPaid" preExecutionCallback="referenceDataStatusUpdate"/>
+        <pos:action name="voidAfterPaid" description="Void After Paid" targetStatusName="voidAfterPaid"/>
+        <pos:action name="changeAccountNumber" description="Change Account number"
+                    targetStatusName="paidChangeAccountNumber" isAdminAction="true"/>
+        <pos:action name="changeCheckNumber" description="Change Check number"
+                    targetStatusName="paidChangeCheckNumber" isAdminAction="true"/>
+    </pos:status>
+
+    <pos:status name="stopAfterPaid" description="Stopped after paid" onArrivalCallback="stopAfterPaidStatusArrivalAndDepartureCallback" onDepartureCallback="stopAfterPaidStatusArrivalAndDepartureCallback" isExceptionalStatus="true">
+        <pos:action name="noPay" description="No pay" preExecutionCallback="adjustAmountPreExecution" targetStatusName="stop"/>
+        <pos:action name="pay" description="Pay" targetStatusName="paid"/>
+    </pos:status>
+
+    <pos:status name="voidAfterPaid" description="Void after paid" onArrivalCallback="voidAfterPaidStatusArrivalCallback" isExceptionalStatus="false">
+        <pos:action name="noPay" description="No pay, Void" preExecutionCallback="adjustAmountAndReferenceDataNullifier" targetStatusName="void"/>
+    </pos:status>
+
+    <!--Ignored as these are not possible states as refrence_data cannot have duplicate paid items -->
+    <pos:status name="duplicatePaid" description="Duplicate Paid" onArrivalCallback="duplicatePaidStatusArrivalAndDepartureCallback" onDepartureCallback="duplicatePaidStatusArrivalAndDepartureCallback" isExceptionalStatus="true">
+        <pos:action description="Pay" name="pay" targetStatusName="paid"/>
+        <pos:action description="Delete" name="delete" targetStatusName="delete" isAdminAction="true"/>
+        <pos:action description="No Pay" name="noPay" targetStatusName="noPay"/>
+        <pos:action name="changeAccountNumber" description="Change Account number"
+                    targetStatusName="duplicatePaidAccountNumberChanged" isAdminAction="true"/>
+        <pos:action name="changeCheckNumber" description="Change Check number"
+                    targetStatusName="duplicatePaidCheckNumberChanged" isAdminAction="true"/>
+        <pos:action name="changeCurrentCheckNumber" description="Change Current Check number"
+                    targetStatusName="duplicatePaidChangeCurrentCheckNumber" isAdminAction="true"/>
+        <pos:action name="changeCurrentAccountNumber" description="Change Current Account number"
+                    targetStatusName="duplicatePaidChangeCurrentAccountNumber" isAdminAction="true"/>
+    </pos:status>
+
+    <pos:status name="noPay" description="No Pay">
+        <!--&lt;!&ndash;StopPresentedException, please refer to https://intraedge.atlassian.net/wiki/display/WALPP/Check%2C+Exception+Types&ndash;&gt;
+        <pos:action name="stop" description="Stop" targetStatusName="stop" isAdminAction="true" preExecutionCallback="referenceDataStatusUpdate"/>-->
+    </pos:status>
+
+    <pos:status name="stopPresented" description="Stop Presented, No Pay" isExceptionalStatus="false">
+        <!--StopPresentedException, please refer to https://intraedge.atlassian.net/wiki/display/WALPP/Check%2C+Exception+Types-->
+        <pos:action name="stop" description="Stop" targetStatusName="stop" isAdminAction="true" preExecutionCallback="referenceDataStatusUpdate"/>
+    </pos:status>
+
+    <pos:status name="duplicatePaidAccountNumberChanged" description="Duplicate paid, account number changed" onArrivalCallback="duplicatePaidAccountNumberChanged" isExceptionalStatus="false">
+        <pos:action description="Misread account number" name="misreadAccountNumber" targetStatusName="paid" preExecutionCallback="referenceDataStatusUpdate"/>
+    </pos:status>
+
+    <pos:status name="duplicatePaidCheckNumberChanged" description="Duplicate paid, check number changed" onArrivalCallback="duplicatePaidCheckNumberChanged" isExceptionalStatus="false">
+        <pos:action description="Misread check number" name="misreadCheckNumber" targetStatusName="paid" preExecutionCallback="referenceDataStatusUpdate"/>
+    </pos:status>
+
+    <pos:status name="duplicatePaidChangeCurrentCheckNumber" description="Changed current check number" onArrivalCallback="duplicatePaidCurrentCheckNumberChanged" isExceptionalStatus="false">
+        <pos:action description="Move to start" name="moveToStart" targetStatusName="start" preExecutionCallback="referenceDataStatusUpdate"/>
+    </pos:status>
+
+    <pos:status name="duplicatePaidChangeCurrentAccountNumber" description="Changed current account number" onArrivalCallback="duplicatePaidCurrentAccountNumberChanged" isExceptionalStatus="false">
+        <pos:action description="Move to start" name="moveToStart" targetStatusName="start" preExecutionCallback="referenceDataStatusUpdate"/>
+    </pos:status>
+
+    <pos:status name="paidChangeAccountNumber" description="Paid, Change account number" onArrivalCallback="paidChangeAccountNumberCallback" isExceptionalStatus="false">
+        <pos:action description="Misread account number" name="misreadAccountNumber" targetStatusName="issued" preExecutionCallback="referenceDataStatusUpdate"/>
+    </pos:status>
+
+    <pos:status name="paidChangeCheckNumber" description="Paid, Change check number" onArrivalCallback="paidChangeCheckNumberCallback" isExceptionalStatus="false">
+        <pos:action description="Misread check number" name="misreadCheckNumber" targetStatusName="issued" preExecutionCallback="referenceDataStatusUpdate"/>
+    </pos:status>
+
+    <pos:status name="invalidAmountPaid" description="Invalid amount paid" isExceptionalStatus="true" onArrivalCallback="invalidAmountStatusArrivalAndDepartureCallback" onDepartureCallback="invalidAmountStatusArrivalAndDepartureCallback">
+        <pos:action name="pay" description="Pay" targetStatusName="paid" preExecutionCallback="adjustAmountNotMatching"/>
+        <pos:action name="noPay" description="No pay" targetStatusName="noPay"/>
+        <pos:action name="changeAccountNumber" description="Change Account number"
+                    targetStatusName="invalidAmountAccountNumberChanged" isAdminAction="true"/>
+        <pos:action name="changeCheckNumber" description="Change Check number"
+                    targetStatusName="invalidAmountCheckNumberChanged" isAdminAction="true"/>
+        <pos:action name="changeCurrentCheckNumber" description="Change Current Check number"
+                    targetStatusName="invalidAmountChangedCurrentCheckNumber" isAdminAction="true"/>
+        <pos:action name="changeCurrentAccountNumber" description="Change Current Account number"
+                    targetStatusName="invalidAmountChangedCurrentAccountNumber" isAdminAction="true"/>
+    </pos:status>
+
+    <pos:status name="invalidAmountStop" description="Invalid amount stop" isExceptionalStatus="true" onArrivalCallback="invalidAmountStatusArrivalAndDepartureCallback" onDepartureCallback="invalidAmountStatusArrivalAndDepartureCallback">
+        <pos:action name="stop" description="No pay" targetStatusName="stop" preExecutionCallback="adjustAmountNotMatching"/>
+        <pos:action name="pay" description="Pay" targetStatusName="paid"/>
+        <pos:action name="changeAccountNumber" description="Change Account number"
+                    targetStatusName="invalidAmountAccountNumberChanged" isAdminAction="true"/>
+        <pos:action name="changeCheckNumber" description="Change Check number"
+                    targetStatusName="invalidAmountCheckNumberChanged" isAdminAction="true"/>
+        <pos:action name="changeCurrentCheckNumber" description="Change Current Check number"
+                    targetStatusName="invalidAmountChangedCurrentCheckNumber" isAdminAction="true"/>
+        <pos:action name="changeCurrentAccountNumber" description="Change Current Account number"
+                    targetStatusName="invalidAmountChangedCurrentAccountNumber" isAdminAction="true"/>
+    </pos:status>
+
+    <pos:status name="invalidAmountAccountNumberChanged" description="Invalid amount, account number changed" onArrivalCallback="invalidAmountAccountNumberChanged" isExceptionalStatus="false">
+        <pos:action description="Misread account number" name="misreadAccountNumber" targetStatusName="issued" preExecutionCallback="referenceDataStatusUpdate"/>
+    </pos:status>
+
+    <pos:status name="invalidAmountCheckNumberChanged" description="Invalid amount, check number changed" onArrivalCallback="invalidAmountCheckNumberChanged" isExceptionalStatus="false">
+        <pos:action description="Misread check number" name="misreadCheckNumber" targetStatusName="issued"  preExecutionCallback="referenceDataStatusUpdate"/>
+    </pos:status>
+
+    <pos:status name="invalidAmountChangedCurrentCheckNumber" description="Changed current check number" onArrivalCallback="invalidAmountCurrentCheckNumberChanged" isExceptionalStatus="false">
+        <pos:action description="Move to start" name="moveToStart" targetStatusName="start" preExecutionCallback="referenceDataStatusUpdate"/>
+    </pos:status>
+
+    <pos:status name="invalidAmountChangedCurrentAccountNumber" description="Changed current account number" onArrivalCallback="invalidAmountCurrentAccountNumberChanged" isExceptionalStatus="false">
+        <pos:action description="Move to start" name="moveToStart" targetStatusName="start" preExecutionCallback="referenceDataStatusUpdate"/>
+    </pos:status>
+
+    <pos:status name="stop" description="Stop" onArrivalCallback="stopStatusArrivalCallback" isExceptionalStatus="false">
+        <pos:action name="stopPaid" description="Stop Paid" targetStatusName="stopPaid" preExecutionCallback="referenceDataStatusUpdate"/>
+        <pos:action name="stopNotIssued" description="Stop not issued" targetStatusName="stopNotIssued"/>
+        <!--<pos:action name="duplicateStop" description="Duplicate Stop" targetStatusName="duplicateStop" preExecutionCallback="referenceDataStatusUpdate" />-->
+        <!--StopPresentedException, please refer to https://intraedge.atlassian.net/wiki/display/WALPP/Check%2C+Exception+Types-->
+        <pos:action name="stopPresentedNoPay" description="Stop presented, no Pay" targetStatusName="stopPresented" isAdminAction="true" preExecutionCallback="referenceDataStatusUpdate"/>
+        <pos:action name="voidAfterStop" description="Void After Stop" targetStatusName="voidAfterStop"/>
+        <pos:action name="issuedAfterStop" description="Issued After Stop" targetStatusName="issuedAfterStop"/>
+    </pos:status>
+
+    <pos:status name="voidAfterStop" description="Void After Stop" onArrivalCallback="voidAfterStopStatusArrivalAndDepartureCallback" onDepartureCallback="voidAfterStopStatusArrivalAndDepartureCallback" isExceptionalStatus="false">
+        <pos:action name="stop" description="Stop" targetStatusName="stop"/>
+    </pos:status>
+
+    <pos:status name="issuedAfterStop" description="Issued After Stop" onArrivalCallback="issuedAfterStopStatusArrivalAndDepartureCallback" onDepartureCallback="issuedAfterStopStatusArrivalAndDepartureCallback" isExceptionalStatus="false">
+        <!-- The check will be moved into "Stop" status as we are not marking the check as "PROCESSED" -->
+        <pos:action name="issued" description="Issued" preExecutionCallback="referenceDataNullifier"
+                    targetStatusName="issued"/>
+    </pos:status>
+
+    <!-- Ignorable use case as Reference data now cannot have same check number, account number and account id" -->
+    <pos:status name="duplicateStop" description="Duplicate stop" onArrivalCallback="duplicateStopStatusArrivalAndDepartureCallback" onDepartureCallback="duplicateStopStatusArrivalAndDepartureCallback" isExceptionalStatus="true">
+        <pos:action name="ignore" description="Ignore" targetStatusName="stop"/>
+        <pos:action name="changeAccountNumber" description="Change Account number"
+                    targetStatusName="duplicateStopAccountNumberChanged" isAdminAction="true"/>
+        <pos:action name="changeCheckNumber" description="Change Check number"
+                    targetStatusName="duplicateStopCheckNumberChanged" isAdminAction="true"/>
+        <pos:action name="changeCurrentCheckNumber" description="Changed Current Check number"
+                    targetStatusName="duplicateStopChangeCurrentCheckNumber" isAdminAction="true"/>
+        <pos:action name="changeCurrentAccountNumber" description="Change Current Account number"
+                    targetStatusName="duplicateStopChangeCurrentAccountNumber" isAdminAction="true"/>
+    </pos:status>
+
+    <pos:status name="duplicateStopCheckNumberChanged" description="Duplicate Stop, Check number changed" onArrivalCallback="duplicateStopCheckNumberChanged">
+        <pos:action description="Misread check number" name="misreadCheckNumber" targetStatusName="stop" preExecutionCallback="referenceDataStatusUpdate"/>
+    </pos:status>
+
+    <pos:status name="duplicateStopAccountNumberChanged" description="Duplicate Stop, Account number changed" onArrivalCallback="duplicateStopAccountNumberChanged">
+        <pos:action description="Misread account number" name="misreadAccountNumber" targetStatusName="stop" preExecutionCallback="referenceDataStatusUpdate"/>
+    </pos:status>
+
+    <pos:status name="duplicateStopChangeCurrentCheckNumber" description="Change current check number" onArrivalCallback="duplicateStopCurrentCheckNumberChanged">
+        <pos:action description="Move to Start" name="moveToStart" targetStatusName="start" preExecutionCallback="referenceDataStatusUpdate"/>
+    </pos:status>
+
+    <pos:status name="duplicateStopChangeCurrentAccountNumber" description="Change current account number" onArrivalCallback="duplicateStopCurrentAccountNumberChanged">
+        <pos:action description="Move to start" name="moveToStart" targetStatusName="start" preExecutionCallback="referenceDataStatusUpdate"/>
+    </pos:status>
+
+    <pos:status name="paidNotIssued" description="Paid, Not Issued" onArrivalCallback="paidNotIssuedStatusArrivalAndDepartureCallback" onDepartureCallback="paidNotIssuedStatusArrivalAndDepartureCallback" isExceptionalStatus="true">
+        <pos:action name="noPay" description="No pay" targetStatusName="noPay" preExecutionCallback="adjustAmountAndReferenceDataNullifier"/>
+        <pos:action name="pay" description="Pay" targetStatusName="paid"/>
+        <pos:action name="changeAccountNumber" description="Change Account number"
+                    targetStatusName="paidNotIssuedAccountNumberChanged" isAdminAction="true"/>
+        <pos:action name="changeCheckNumber" description="Change Check number"
+                    targetStatusName="paidNotIssuedCheckNumberChanged" isAdminAction="true"/>
+    </pos:status>
+
+    <pos:status name="paidNotIssuedCheckNumberChanged" description="Paid not issued, Check number changed" onArrivalCallback="paidNotIssuedCheckNumberChanged">
+        <!--No need to put  preExecutionCallback="referenceDataStatusUpdate" as its being handled within the onArrivalCallback-->
+        <pos:action description="Misread check number" name="misreadCheckNumber" targetStatusName="delete" preExecutionCallback="referenceDataStatusUpdate"/>
+    </pos:status>
+
+    <pos:status name="paidNotIssuedAccountNumberChanged" description="Paid not issued, Account number changed" onArrivalCallback="paidNotIssuedAccountNumberChanged">
+        <!--No need to put  preExecutionCallback="referenceDataStatusUpdate" as its being handled within the onArrivalCallback-->
+        <pos:action description="Misread account number" name="misreadAccountNumber" targetStatusName="delete" preExecutionCallback="referenceDataStatusUpdate"/>
+    </pos:status>
+
+    <pos:status name="stopNotIssued" description="Stop, Not Issued" onArrivalCallback="stopNotIssuedStatusArrivalAndDepartureCallback" onDepartureCallback="stopNotIssuedStatusArrivalAndDepartureCallback" isExceptionalStatus="false">
+		   <pos:action name="stop" description="Stop" targetStatusName="stop"/>
+    </pos:status>
+
+    <pos:status name="stale" description="Stale" isExceptionalStatus="false" onArrivalCallback="staleStatusArrivalCallback">
+        <pos:action name="stalePaid" description="Stale, Paid" targetStatusName="stalePaid" preExecutionCallback="referenceDataStatusUpdate"/>
+        <pos:action name="staleStop" description="Stale, Stop" targetStatusName="staleStop" preExecutionCallback="referenceDataStatusUpdate"/>
+        <pos:action name="staleVoid" description="Stale, Void" targetStatusName="staleVoid"/>
+    </pos:status>
+
+    <pos:status name="stalePaid" description="Stale, paid" onArrivalCallback="stalePaidStatusArrivalAndDepartureCallback" onDepartureCallback="stalePaidStatusArrivalAndDepartureCallback" isExceptionalStatus="true">
+        <pos:action name="pay" description="Pay" targetStatusName="paid"/>
+        <pos:action name="noPay" description="No pay" preExecutionCallback="adjustAmountAndReferenceDataNullifier" targetStatusName="noPay" />
+        <pos:action name="changeAccountNumber" description="Change Account number"
+                    targetStatusName="stalePaidAccountNumberChanged" isAdminAction="true"/>
+        <pos:action name="changeCheckNumber" description="Change Check number"
+                    targetStatusName="stalePaidCheckNumberChanged" isAdminAction="true"/>
+        <pos:action name="changeCurrentCheckNumber" description="Change Current Check number"
+                    targetStatusName="stalePaidChangeCurrentCheckNumber" isAdminAction="true"/>
+        <pos:action name="changeCurrentAccountNumber" description="Change Current Account number"
+                    targetStatusName="stalePaidChangeCurrentAccountNumber" isAdminAction="true"/>
+    </pos:status>
+
+    <pos:status name="staleStop" description="Stale, stop" isExceptionalStatus="true">
+        <pos:action name="stop" description="Stop" targetStatusName="stop"/>
+        <pos:action name="ignore" description="Ignore" preExecutionCallback="referenceDataNullifier" targetStatusName="stale"/>
+    </pos:status>
+
+    <pos:status name="staleVoid" description="Stale, void" onArrivalCallback="staleVoidStatusArrivalCallback" isExceptionalStatus="false">
+        <pos:action name="void" description="Void" targetStatusName="void"/>
+    </pos:status>
+
+    <pos:status name="stalePaidAccountNumberChanged" description="Stale paid, account number changed" onArrivalCallback="stalePaidAccountNumberChanged" isExceptionalStatus="false">
+        <pos:action description="Misread account number" name="misreadAccountNumber" targetStatusName="stale"  preExecutionCallback="referenceDataStatusUpdate"/>
+    </pos:status>
+
+    <pos:status name="stalePaidCheckNumberChanged" description="Stale paid, check number changed" onArrivalCallback="stalePaidCheckNumberChanged" isExceptionalStatus="false">
+        <pos:action description="Misread check number" name="misreadCheckNumber" targetStatusName="stale"   preExecutionCallback="referenceDataStatusUpdate"/>
+    </pos:status>
+
+    <pos:status name="stalePaidChangeCurrentCheckNumber" description="Changed current check number" onArrivalCallback="stalePaidCurrentCheckNumberChanged" isExceptionalStatus="false">
+        <pos:action description="Move to start" name="moveToStart" targetStatusName="start"   preExecutionCallback="referenceDataStatusUpdate"/>
+    </pos:status>
+
+    <pos:status name="stalePaidChangeCurrentAccountNumber" description="Changed current account number" onArrivalCallback="stalePaidCurrentAccountNumberChanged" isExceptionalStatus="false">
+        <pos:action description="Move to start" name="moveToStart" targetStatusName="start"   preExecutionCallback="referenceDataStatusUpdate"/>
+    </pos:status>
+
+    <pos:status name="stopPaid" description="Stop, Paid" onArrivalCallback="stopPaidArrivalAndDepartureCallback" onDepartureCallback="stopPaidArrivalAndDepartureCallback" isExceptionalStatus="true">
+        <pos:action name="pay" description="Pay" targetStatusName="paid"/>
+        <pos:action name="noPay" description="No pay" preExecutionCallback="adjustAmountPreExecution" targetStatusName="noPay"/>
+        <pos:action name="changeAccountNumber" description="Change Account number"
+                    targetStatusName="stopPaidAccountNumberChanged" isAdminAction="true"/>
+        <pos:action name="changeCheckNumber" description="Change Check number"
+                    targetStatusName="stopPaidCheckNumberChanged" isAdminAction="true"/>
+        <pos:action name="changeCurrentCheckNumber" description="Change Current Check number"
+                    targetStatusName="stopPaidChangeCurrentCheckNumber" isAdminAction="true"/>
+        <pos:action name="changeCurrentAccountNumber" description="Change Current Account number"
+                    targetStatusName="stopPaidChangeCurrentAccountNumber" isAdminAction="true"/>
+    </pos:status>
+
+    <pos:status name="stopPaidAccountNumberChanged" description="Stop paid, account number changed" onArrivalCallback="stopPaidAccountNumberChanged" isExceptionalStatus="false">
+        <pos:action description="Misread account number" name="misreadAccountNumber" targetStatusName="stop" preExecutionCallback="referenceDataStatusUpdate"/>
+    </pos:status>
+
+    <pos:status name="stopPaidCheckNumberChanged" description="Stop paid, check number changed" onArrivalCallback="stopPaidCheckNumberChanged" isExceptionalStatus="false">
+        <pos:action description="Misread check number" name="misreadCheckNumber" targetStatusName="stop" preExecutionCallback="referenceDataStatusUpdate"/>
+    </pos:status>
+
+    <pos:status name="stopPaidChangeCurrentCheckNumber" description="Changed current check number" onArrivalCallback="stopPaidCurrentCheckNumberChanged" isExceptionalStatus="false">
+        <pos:action description="Move to start" name="moveToStart" targetStatusName="start" preExecutionCallback="referenceDataStatusUpdate"/>
+    </pos:status>
+
+    <pos:status name="stopPaidChangeCurrentAccountNumber" description="Changed current account number" onArrivalCallback="stopPaidCurrentAccountNumberChanged" isExceptionalStatus="false">
+        <pos:action description="Move to start" name="moveToStart" targetStatusName="start" preExecutionCallback="referenceDataStatusUpdate"/>
+    </pos:status>
+
+    <pos:status name="delete" description="Delete" isExceptionalStatus="false">
+    </pos:status>
+
+</pos:workflow>

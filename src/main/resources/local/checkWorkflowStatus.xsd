@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema targetNamespace="http://v1.jaxb.positivepay.westernalliancebancorp.com" xmlns="http://v1.jaxb.positivepay.westernalliancebancorp.com" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="workflow">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="documentation" type="xs:string" minOccurs="0"/>
+                <xs:element ref="status" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attribute name="version" type="xs:decimal" use="required"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="status">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="documentation" type="xs:string" minOccurs="0"/>
+                <xs:element ref="action" maxOccurs="unbounded" minOccurs="0"/>
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:string" use="required"/>
+            <xs:attribute name="description" type="xs:string" use="required"/>
+            <xs:attribute name="onArrivalCallback" type="xs:string" use="optional"/>
+            <xs:attribute name="onDepartureCallback" type="xs:string" use="optional"/>
+            <xs:attribute name="isExceptionalStatus" type="xs:boolean" use="optional"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="action">
+        <xs:complexType>
+            <xs:attribute name="name" type="xs:string" use="required"/>
+            <xs:attribute name="isPresentable" type="xs:boolean" use="required"/>
+            <xs:attribute name="description" type="xs:string" use="required"/>
+            <xs:attribute name="targetStatusName" type="xs:string" use="required"/>
+            <xs:attribute name="paymentStatus" type="xs:string" use="optional"/>
+            <xs:attribute name="isAdminAction" type="xs:boolean" use="optional"/>
+            <xs:attribute name="preExecutionCallback" type="xs:string" use="optional"/>
+            <xs:attribute name="postExecutionCallback" type="xs:string" use="optional"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

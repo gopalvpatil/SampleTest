@@ -1,0 +1,170 @@
+Account:
+	-remove Bank from code model (Postponed)
+
+Bank:
+	website_url increase length to 255 (Done in hibernate model)
+
+check_detail:
+	-change digest to duplicate_identifier, and set length to 255 (Done in hibernate model)
+	-remove exception (I don't see this hibernate model, may be it is from Spreadsheet)
+	-check number is 75 characters (Done in hibernate model)
+	-remove image_retrieval_number (Done in hibernate model)
+	-remove line_item (Done in hibernate model)
+	-line_number to be changed to file_import_line_number varchar(20)(Done in hibernate model)
+
+check_detail_exception:
+	-change account_number length 100 (Done in hibernate model)
+	-remove image_retrieval_number (Done in hibernate model)
+	-change exception_status to exception_status_id (*Anand?)
+	-line_number to be changed to file_import_line_number varchar(20)(Done in hibernate model)
+
+
+check_detail_history:
+	-check_number length to 75 (Done in hibernate model)
+	-remove image_retrieval_number (Done in hibernate model)
+	-remove file meta data from DD (N/A to hibernate model)
+	-remove digest/duplicate_checksum (N/A to hibernate model)
+
+company:
+	-add decision_window_id (Currently it is many to one, however It should be one to one.)
+
+company_contact:
+	-change zip to zip_code (Done in hibernate model)
+
+decision_window:
+	-change time_zone to length 20 (Done in hibernate model)
+
+delimiter:
+	change name to length 50 (Done in hibernate model)
+	change symbol to length 10 (Done in hibernate model)
+	change value to length 20 (Done in hibernate model)
+
+exceptional_reference_data:
+	-document entire table in DD
+	-rename to reference_data_exception (Done in hibernate model)
+	-Account_number should be varchar(20)(Done in hibernate model)
+	-Exception_status varchar(50) (Done in hibernate model)
+	-item_type varchar(25) (Done in hibernate model)
+	=file_import_line_number varchar(20) (Done in hibernate model)
+	-stop_date varchar(25)(Done in hibernate model)
+	-stop_presented_date varchar(25) (Done in hibernate model)
+	-stop_presented_reason varchar(25)(Done in hibernate model)
+	-trace_number varchar(25) (Done in hibernate model)
+	-line number should be changed to file_import_line_number (Done in hibernate model)
+	-*anand to provide details on fields in this table
+
+file_mapping:
+	-change all string fields to length 20 (Done in hibernate model)
+	-change file_mapping_name to length 255 (Done in hibernate model)
+	-change user_detail_id to company_id in code (Done in hibernate model)
+	
+file_meta_data:
+	-status(20) (Done in hibernate model)
+
+item_type:
+	-name(50) (Done in hibernate model)
+	-debit_credit_sign(10) (Done in hibernate model)
+	-code -> item_code (model change)(Done in hibernate model)
+	
+job: (* Didn't change in hibernate model)
+	-time_zone(20) (*Please increase the length  more than 75, Observed that )
+	-name(50)
+	-remove threshold_time
+	-add next_run_date (*Functionality already in place, no change required)
+	-add last_run_date (*Functionality already in place, no change required)
+
+job_action_type:(*Didn't change in hibernate model)
+	-add spring_bean_name to DD
+	-remove job_type_id
+	-add action_group
+
+job_filter_criteria:(*Didn't change in hibernate model)
+	-change criteria name to length 50
+
+job_history:(*Didn't change in hibernate model)
+	-remove next_run_date (*Functionality already in place, no change required)
+	-remove last_run_date (*Functionality already in place, no change required)
+
+job_step:(*Didn't change in hibernate model)
+	-add job type id
+	-change name to length 50
+	-add sequence tinyint
+
+job_step_history (*Didn't change in hibernate model)
+	-needs to be added
+	-relationship to job)_history to be examined
+	
+job_type:(*Didn't change in hibernate model)
+	-name length(255)
+
+linkage_type:
+	-rename to check_detail_linkage_type (Done in hibernate model)
+	-name(50) (Done in hibernate model)
+	-remove grp (Done in hibernate model)
+	-remove type (Done in hibernate model)
+	
+payment_type:
+	-name(50) (Done in hibernate model)
+	
+permission:
+	-name(50) (Done in hibernate model)
+        -rename ui_group to type(50) in DD (Done in hibernate model)
+	
+reason_code:
+	-name(50) (Done in hibernate model)
+	
+reference_data
+	-check_number(75) (Done in hibernate model)
+	-trace_number(100) (Done in hibernate model)
+	-item_type(20) (Done in hibernate model)
+	-Status should be varchar(25) (Done in hibernate model)
+	-Add file_import_line_number varchar(20) (Done in hibernate model)
+	
+report:
+	-output_format(50) (Done in hibernate model)
+	-name(50) (Done in hibernate model)
+	
+report_template:
+	-template_filename(50) (Done in hibernate model)
+	-name(50) (Done in hibernate model)
+	-add account service option (Done in hibernate model)
+
+
+report_parameter_option:
+	-add table (Done in hibernate model)
+
+report_template_parameter_option
+	-add table (Done in hibernate model)
+
+
+role:
+	-name(50) (Done in hibernate model)
+	-comment remove (Done in hibernate model)
+
+sso_attribute:
+	-name(50) (Done in hibernate model)
+	
+symbolic_date:
+	-contemplate if its needed
+
+system_message:
+	-type(10) (Done in hibernate model)
+
+user_detail:
+	-corporate_username(20) (Done in hibernate model)
+	-username(20) (Done in hibernate model)
+	-email_address(100) (Done in hibernate model)
+	-first_name(50) (Done in hibernate model)
+	-last_name(50) (Done in hibernate model)
+	-username(20) (Done in hibernate model)
+	-remove company_id (Done in hibernate model) (Sameer has to re-visit UserController.assignUser , CompanyDtoBuilder.getCompanyDtoFromEntity)
+	-replacing institution_id with bank_id FK (*This change is still pending as Steve is going to get more clarity)
+	
+user_detail_activity:
+	-name(50) (Done in hibernate model)
+
+workflow:
+	-name(50) (Done in hibernate model)
+
+Action_type
+    -name(75) (Done in hibernate model)

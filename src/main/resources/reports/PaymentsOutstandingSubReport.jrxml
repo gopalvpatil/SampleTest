@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PaymentsOutstandingSubReport" pageWidth="802" pageHeight="555" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenResourceMissingType="Empty">
+	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="pageHeader"/>
+    <property name="net.sf.jasperreports.export.csv.exclude.origin.band.2" value="pageFooter"/>	
+    <property name="net.sf.jasperreports.export.csv.exclude.origin.band.3" value="lastPageFooter"/>	
+    <property name="net.sf.jasperreports.export.csv.record.delimiter" value="&#x0D;&#x0A;"/>
+    <property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="in_company_id" class="java.lang.Long"/>
+	<parameter name="in_company_name" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="in_account_ids" class="java.lang.String"/>
+	<parameter name="in_as_of_date" class="java.util.Date"/>
+	<parameter name="sql_account_ids" class="java.lang.String">
+		<defaultValueExpression><![CDATA[($P{in_account_ids} == null ? " 1 = 1 " : " account.id IN "+ $P{in_account_ids})]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+					  account.id AS account_id,
+					  account.number AS account_number,
+      				  account.name AS account_name
+                  FROM
+                      account
+                  WHERE
+                  	  account.id IN $P!{in_account_ids}
+                  AND account.company_id = $P{in_company_id}
+                  ]]>
+	</queryString>
+	<field name="account_id" class="java.lang.Long"/>
+	<field name="account_number" class="java.lang.String"/>
+	<field name="account_name" class="java.lang.String"/>
+	<detail>
+		<band height="82" splitType="Immediate">
+			<textField>
+				<reportElement x="80" y="0" width="600" height="20" forecolor="#2090AA"/>
+				<textElement>
+					<font fontName="Verdana" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{account_number}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="25" width="802" height="54" isPrintWhenDetailOverflows="true"/>
+				<subreportParameter name="account_id">
+					<subreportParameterExpression><![CDATA[$F{account_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="account_number">
+					<subreportParameterExpression><![CDATA[$F{account_number}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="account_name">
+					<subreportParameterExpression><![CDATA[$F{account_name}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="in_as_of_date">
+					<subreportParameterExpression><![CDATA[$P{in_as_of_date}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["reports/PaymentsOutstandingSubSubReport.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>

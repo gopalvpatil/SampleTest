@@ -1,0 +1,192 @@
+-ACCOUNT_CYCLE_CUTOFF
+	-changed name to length(50), removed unique constraint
+	-changed description to length(255), not null
+	-changed is_active default value to true
+
+-ACCOUNT_SERVICE_OPTION
+	-changed name to length(50), removed unique constraint
+	-changed description to length(255), not null
+	-changed is_active default value to true
+
+-ACCOUNT_TYPE
+	-changed name to length(50), removed unique constraint
+	-changed description to length(255), not null
+	-changed is_active default value to true
+
+-ACTION
+	-changed name to length(50)
+	-changed description to length(255), null
+	-changed action_type to length(255), null
+	-changed version to integer
+
+-BANK
+	-removed reference_bank_id
+	-removed description
+
+
+-CHECK_DETAIL
+	-changed issued ammount with precision 19 and scale 2
+	-changed payee to length 255
+	-spreadsheet changed back to digest
+	-*changed issue_date to not null(It should be null in cause the check is a void check) 
+	-changed routing_number to length 20
+	-changed check_number to length 75
+	-spreadsheet changed check_detail_linkage_type_id to linkage_type_id
+	-added void_amount
+	-Spreadsheet line_item, line_number columns should be added
+	-added match_status
+	-*added image_retrieval_number
+	-added stale_date
+	-fixed check status (lots of files changed)
+	-spreadsheet combination of "CHECK_NUMBER", "ACCOUNT_ID" should be unique.
+
+-CHECK_DETAIL_COMMENT
+	-added table, added link to CHECK_DETAIL
+	
+-CHECK_DETAIL_EXCEPTION
+	-commented out line item, line number (need explanation)
+	-added image_retrieval_number
+	-spreadsheet: changed check_amount to issued_amount
+	-Hibernate and Spreadsheet add filemetadataId
+	-Spreadsheet line_item, line_number columns should be added
+	-what is the deal with this table? on surface it seems like it should match check_detail but its like an older version.
+	
+-CHECK_DETAIL_HISTORY
+	-changed name to CHECK_DETAIL_HISTORY
+	-changed routing_number to length 20
+	-changed check_number to length 20
+	-changed payee to length 255
+	-changed issue_date to non null
+	-changed issued_amount to precision 19, scale 2
+	-changed system_comment to length 255
+	-changed user_comment to length 255
+	-spreadsheet: changed CHECK_DETAIL_ID to non null
+	-Created match status column with length 20 and nullable true
+	-*Spreadsheet remove "IMAGE_RETRIEVAL_NUMBER" from check_detail_history as we get it from reference_data table.
+	-*Spreadsheet "Stale date" its a derived value, we can get it from the ome and date when the check has been moved into "Stale" status.
+	-*Spreadsheet "Void amount" created void_amount column in application model but do we have any amount associated with void check? if it is then why can we use "issued_amount" column itself by renaming it to "amount" so when the check has "Void" item_type then it is void amount else it is issued amount or stop amount.
+	-Spreadsheet "FROM_CHECK_STATUS_ID" should be created
+	-*Hibernate model remove "TARGET_CHECK_STATUS_ID" should be created
+	-*Hibernate mode create "check_status_id" as targetChekStatusId.
+	-spreadsheet "action_id" should be created.
+	-Spreadsheet remove "Duplicate checksum" column.
+	-Spreadsheet "linkage_type_id" should be created.
+	-Hibernate model create "exception_type" table.
+
+-CHECK_DETAIL_LINKAGE_TYPE
+	-Spreadsheet change the table name to "Linkage_type"
+	-Spreadsheet add a new column called "TYPE" the value at this moment is "CHECK_DETAIL" with length=50 and non-null=true
+	-Hibernate model changed name length to 50, unique=true and non-null true
+	-Hibernate model changed description length to 255, unique=false and non-null true
+	
+-COMPANY
+	-Hibernate model NAME column is now 50 and non-null=true
+	-Hibernate model description column is removed
+	-Added new column "federal_tax_id" with length varchar 30
+	-Added new column "BRANCH_NAME" with length varchar 50
+	-Added new column "ACCOUNT_FOR_ANALYSIS" with length varchar 30
+	-Added new column "TIME_ZONE" with length varchar 20 nullable=false
+	-Changed BANK_ID as non-null=true
+	
+-COMPANY_CONTACT
+	-Hibernate model restricted the length to 100. made it non-null=true
+	-Spreadsheet please set the non-null restriction
+	-Hibernate model changed the column name from PHONE to PHONE_NUMBER
+	-Hibernate model changed the column name from ZIP to ZIP_CODE
+	-Hibernate model added a new column FAX_NUMBER
+	
+-DECISION_WINDOW
+	-This table is being created.
+	
+-DELIMETER
+	-Hibernate model added constraint to NAME as 50
+	-Hibernate model added constraint to VALUE as 20
+	-Hibernate model added constraint to SYMBOL as 10
+
+-EXCEPTION_STATUS
+	-We have to discuss about this table 
+	
+-FILE_MAPPING
+	-ROUTING_NUMBER_POSITION, ACCOUNT_NUMBER_POSITION, CHECK_NUMBER_POSITION, ISSUE_CODE_POSITION,
+	ISSUE_DATE_POSITION, CHECK_AMOUNT_POSITION, PAYEE_POSITION, FILE_TYPE, FILE_MAPPING_NAME
+	Changed these column lengths to 20.
+	-Spreadsheet change the "FILE_MAPPING_NAME" column length to 50 
+	-Spreadsheet change the "FILE_MAPPING_NAME" column to "NAME"
+
+-FILE_META_DATA
+	-Hibernate model CHECKSUM column length constraint to 255
+	-Hibernate model FILE_NAME column length constraint to 40
+	-Hibernate model UPLOAD_DIRECTORY, ORIGINAL_FILE_NAME column length constraint to 255
+	-Hibernate model STATUS column length constraint to 20
+
+-ITEM_TYPE
+	-Hibernate model NAME column length constraint to 50
+	-Hibernate model DESCRIPTION column length constraint to 255
+	-Hibernate model DEBIT_CREDIT_SIGN column length constraint to 10
+	-Hibernate model CODE column length constraint to 1
+	
+-JOB
+	-Hibernate model NAME column length constraint to 50
+	-Spreadsheet the name should be changed to 150
+	-Spreadsheet interval_time should be var char
+	
+-JOB_ACTION_TYPE
+	-Need to discuss more about this table, with Gopal.
+
+-JOB_EXECUTION_LOCKER
+	-Hibernate model EXECUTING_ON_MACHINE column length constraint to 50
+	
+-JOB_FILTER_CRITERIA
+	-Table has to be created.
+	
+-JOB_HISTORY
+	-Hibernate model "scheduled_start_date" is missing.
+	-Hibernate model length is restricted to 50
+	-Spreadsheet "LAST_RUN_DATE" is missing
+	
+-JOB_STATUS_TYPE
+	-Hibernate model "name" length is restricted to 50
+	-Hibernate model "STATUS_CODE" length is restricted to 15
+	
+-JOB_STEP
+	-Hibernate model job_type_id is missing.
+	-Hibernate model NAME column length is restricted to 50
+	-Hibernate model DESCRIPTION column length is restricted to 255
+	
+-JOB_STEP_HISTORY
+	-Hibernate model this table is missing
+
+-JOB_TYPE
+	-Hibernate model NAME column length is restricted to 50
+	
+-PAYMENT_TYPE
+	-Hibernate model NAME column length is restricted to 50
+	-Hibernate model DESCRIPTION column length is restricted to 255
+	
+-PERMISSION
+	-Hibernate model NAME column length is restricted to 50
+	-Hibernate model DESCRIPTION column length is restricted to 255
+	-Spreadsheet column name UI_GROUP should be renamed to TYPE
+
+-REASON_CODE
+	-Hibernate model NAME column length is restricted to 50 and nullable is set to false
+	-Hibernate model DESCRIPTION column length is restricted to 255 and nullable is set to false
+	-Hibernate model IS_ACTIVE, IS_PAY column's nullable attribute is set to false
+	
+-REFERENCE_DATA
+	-Hibernate model ITEM_TYPE column length is restricted to 20 and nullable is set to false
+	-Hibernate model FILE_META_DATA_ID column nullable is set to true
+	-Spreadsheet column name CHECK_AMOUNT should be changed to AMOUNT
+	-Hibernate model AMOUNT column length is restricted with PRECISION to 19 and 20
+	-Hibernate model CHECK_NUMBER length is restricted to 75
+	-Spreadsheet CHECK_NUMBER length has to be increased to 75
+	-Spreadsheet PAID_DATE column should be set to nullable.
+	-Spreadsheet STOP_DATE column should be set to nullable
+	-Hibernate model ASSIGNED_BANK_NUMBER column is set to null.
+	-Hibernate model STATUS column length is restricted to 255 and nullable is set to true
+	-Spreadsheet TRACE_NUMBER column should be set to nullable.
+	
+	
+Are all the description fields necessary? 
+Are all the varchar(255)'s necessary? 
+Are all non-null descriptions really supposed to be like that, and why are other descriptions nullable?

@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BillingExtractReport" pageWidth="612" pageHeight="792" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty">
+	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="pageHeader"/>
+    <property name="net.sf.jasperreports.export.csv.exclude.origin.band.2" value="pageFooter"/>	
+    <property name="net.sf.jasperreports.export.csv.exclude.origin.band.3" value="lastPageFooter"/>	
+    <property name="net.sf.jasperreports.export.csv.record.delimiter" value="&#x0D;&#x0A;"/>
+    <property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="report_name" class="java.lang.String"/>
+	<parameter name="in_bank" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="in_company_ids" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="in_account_ids" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="in_as_of_date" class="java.util.Date"/>
+	<queryString>
+        <![CDATA[SELECT
+            company.name as company_name,
+            account.number as account_number,
+            UPPER(LEFT(check_status.name,1))+LOWER(SUBSTRING(check_status.name,2,LEN(check_status.name))) as check_status_name,
+            Count(check_detail.id) as count_check_detail
+            FROM bank 
+            INNER JOIN account ON account.bank_id = bank.id 
+            INNER JOIN company ON account.company_id = company.id 
+            INNER JOIN check_detail ON check_detail.account_id = account.id 
+            INNER JOIN check_status ON check_detail.check_status_id = check_status.id
+            GROUP BY account.id, company.name, account.number, check_status.name]]>
+	</queryString>
+	<field name="company_name" class="java.lang.String"/>
+	<field name="account_number" class="java.lang.String"/>
+	<field name="check_status_name" class="java.lang.String"/>
+	<field name="count_check_detail" class="java.lang.String"/>
+	
+	<pageHeader>
+		<band height="28" splitType="Immediate">
+			<textField>
+				<reportElement x="0" y="0" width="802" height="20" forecolor="#0F4D76"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Verdana" size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression>$P{report_name}</textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="24" splitType="Immediate">
+			<staticText>
+				<reportElement x="7" y="0" width="128" height="20" forecolor="#0F4D76"/>
+				<textElement textAlignment="Center">
+					<font fontName="Verdana" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Customer Number]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="147" y="0" width="157" height="20" forecolor="#0F4D76"/>
+				<textElement textAlignment="Center">
+					<font fontName="Verdana" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Account]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="334" y="0" width="110" height="20" forecolor="#0F4D76"/>
+				<textElement textAlignment="Center">
+					<font fontName="Verdana" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Item Type]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="466" y="0" width="90" height="20" forecolor="#0F4D76"/>
+				<textElement textAlignment="Center">
+					<font fontName="Verdana" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Count]]></text>
+			</staticText>
+			<line>
+				<reportElement x="7" y="22" width="128" height="1"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="147" y="22" width="157" height="1"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="334" y="22" width="110" height="1"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="466" y="22" width="90" height="1"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnHeader>
+    
+	<detail>
+		<band height="28" splitType="Immediate">
+			<textField>
+				<reportElement x="7" y="4" width="128" height="20" forecolor="#F68E43">
+				</reportElement>
+				<textElement>
+					<font fontName="Verdana" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{company_name}]]></textFieldExpression>
+			</textField>
+			
+			<textField>
+				<reportElement x="147" y="4" width="157" height="20" forecolor="#F68E43">
+				</reportElement>
+				<textElement>
+					<font fontName="Verdana" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{account_number}]]></textFieldExpression>
+			</textField>
+            
+            <textField>
+				<reportElement x="334" y="4" width="110" height="20" forecolor="#F68E43">
+				</reportElement>
+				<textElement>
+					<font fontName="Verdana" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{check_status_name}]]></textFieldExpression>
+			</textField>
+			
+			<textField>
+				<reportElement x="466" y="4" width="90" height="20" forecolor="#F68E43">
+				</reportElement>
+				<textElement>
+					<font fontName="Verdana" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{count_check_detail}]]></textFieldExpression>
+			</textField>			
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="23" splitType="Immediate">
+			<textField>
+    			<reportElement key="pageNumber" mode="Transparent" x="737" y="5" width="50" height="16" forecolor="#18186F"/>
+    			<textElement textAlignment="Center">
+					<font fontName="Verdana" size="10"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+			    <textFieldExpression class="java.lang.String">
+			        "Page " + $V{PAGE_NUMBER} + " of "
+			    </textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+			    <reportElement key="pageNumber" mode="Transparent" x="782" y="5" width="15" height="16" forecolor="#18186F"/>
+			    <textElement textAlignment="Center">
+					<font fontName="Verdana" size="10"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+			    <textFieldExpression class="java.lang.String">
+			        $V{PAGE_NUMBER}
+			    </textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement key="currentDate" mode="Transparent" x="7" y="5" width="164" height="16" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" forecolor="#18186F"/>
+				<textElement verticalAlignment="Middle" rotation="None">
+					<font fontName="Verdana" size="10" isBold="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a").format(new java.util.Date())]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="pageNumber" mode="Transparent" x="374" y="5" width="75" height="16" forecolor="#18186F"/>
+				<textElement textAlignment="Center" rotation="None">
+					<font fontName="Verdana" size="10" isBold="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Confidential "]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="48" splitType="Immediate">
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="pageNumber" mode="Transparent" x="375" y="30" width="75" height="16" forecolor="#18186F"/>
+				<textElement textAlignment="Center" rotation="None">
+					<font fontName="Verdana" size="10" isBold="true" isItalic="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Confidential "]]></textFieldExpression>
+			</textField>
+			<textField>
+    			<reportElement key="pageNumber" mode="Transparent" x="737" y="30" width="50" height="16" forecolor="#18186F"/>
+    			<textElement textAlignment="Center">
+					<font fontName="Verdana" size="10"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+			    <textFieldExpression class="java.lang.String">
+			        "Page " + $V{PAGE_NUMBER} + " of "
+			    </textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+			    <reportElement key="pageNumber" mode="Transparent" x="782" y="30" width="15" height="16" forecolor="#18186F"/>
+			    <textElement textAlignment="Center">
+					<font fontName="Verdana" size="10"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+			    <textFieldExpression class="java.lang.String">
+			        $V{PAGE_NUMBER}
+			    </textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement key="currentDate" mode="Transparent" x="8" y="32" width="164" height="16" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" forecolor="#18186F"/>
+				<textElement verticalAlignment="Middle" rotation="None">
+					<font fontName="Verdana" size="10" isBold="true" isItalic="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a").format(new java.util.Date())]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+</jasperReport>

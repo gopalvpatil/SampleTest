@@ -1,0 +1,52 @@
+.panel-primary .panel-heading { 
+	color: white;
+	background-color: white;
+}
+ 
+select {  
+    padding-right: 0px; 
+	background: #fff;
+}
+
+.selectbox select {  
+    filter: none;  
+}  
+ 
+.selecttext {  
+    color: #fff;
+}  
+
+select option:focus{
+  	background-color: transparent;
+}
+
+input[type="checkbox"]:focus,
+input[type="checkbox"]:active,
+input[type="checkbox"][disabled]{
+    background-color:transparent;
+}
+
+.checkbox, .radio {
+	background-color: red;
+    display: block;
+    clear: left;
+    float: left;
+	background-color:transparent;
+}
+
+.button {
+	filter: none !important;
+	background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHZpZXdCb3g9IjAgMCAxIDEiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPgo8bGluZWFyR3JhZGllbnQgaWQ9ImczMzIiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjAlIiB5Mj0iMTAwJSI+CjxzdG9wIHN0b3AtY29sb3I9IiNGRkZGRkYiIG9mZnNldD0iIi8+PHN0b3Agc3RvcC1jb2xvcj0iI0Q0RDRENCIgb2Zmc2V0PSIxIi8+CjwvbGluZWFyR3JhZGllbnQ+CjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9InVybCgjZzMzMikiIC8+Cjwvc3ZnPg==);
+}
+
+.pp-width-ie-10 {
+	width: 10%;
+}
+
+.pp-heading-a {
+	color: #006b87 !important;
+}
+
+
+
+

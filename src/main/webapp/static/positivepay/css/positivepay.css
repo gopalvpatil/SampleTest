@@ -1,0 +1,826 @@
+/*** Basic HTML Styles ***/
+
+@font-face {
+	font-family: Droid Sans;
+	src: url(../font/DroidSans.ttf);
+}
+
+html, body {
+	height: 100%;
+  	font-family: 'Droid Sans', 'sans-serif';
+  	font-size: 16px;
+	background-color: #dcdcd4;
+}
+
+@media print {
+	body {
+		-webkit-print-color-adjust:exact;
+	}
+}
+
+h1 {
+	color: #666666;
+	text-transform: uppercase;
+	font-size: 30px;
+}
+
+h2 {
+	color: #006B87;
+	font-size: 24pt;
+}
+
+h3 {
+	color: #666666;
+	font-size: 18px;
+}
+
+h4 {
+	color: #666666;
+	font-size: 14px;
+}
+
+hr {
+	height: 1px;
+	background-color: #D7D7D7;
+	border-color: #D7D7D7;
+	color: #D7D7D7;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+
+label {
+	font-weight: normal;
+	margin-bottom: 0px;
+}
+
+#wrap {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin-bottom: -50px; 
+}
+
+#body {
+	margin-bottom: 50px;
+}
+
+#globalMessage {
+	margin-top: 20px;
+}
+
+
+#footer {
+	height: 30px;
+}
+
+.emulation-text {
+	color: red;
+	font-size: 16px;
+	text-align: center;
+}
+
+.system-message-text {
+	color: red;
+}
+
+.maintenance-message-text {
+	color: red;
+}
+
+.positivepay-menu-spacer {
+	position: relative;
+  	min-height: 1px;
+  	padding-right: 15px;
+  	padding-left: 15px;
+  	width: 64%;
+  	margin-left: 18%;
+  	overflow: hidden;
+}
+
+.positivepay-column-spacer {
+	position: relative;
+  	min-height: 1px;
+  	padding-right: 15px;
+  	padding-left: 15px;
+  	float: none;
+  	width: 1200px;
+  	margin: auto;
+  	overflow: hidden;
+}
+
+.open-reportDialog {
+	
+}
+
+.textarea-vertical-resize {
+	resize: vertical;
+}
+
+/*** END Basic HTML Styles ***/
+	
+/*** Positive Pay Sprites ***/
+
+.pp-sprite 
+.pp-sprite-close-window {
+	border: 0;
+	padding: 0;
+}
+
+.pp-sprite-gold-star {
+	width: 25px;
+	height: 24px;
+	background: url(../images/icons/gold-star-sprite.png) 0 0 no-repeat;
+}
+
+.pp-sprite-silver-star {
+	width: 25px;
+	height: 24px;
+	background: url(../images/icons/silver-star-sprite.png) 0 0 no-repeat;
+}
+
+.pp-sprite-add {
+	width: 23px;
+	height: 23px;
+	background: url(../images/icons/add-sprite.png) 0 0 no-repeat;
+}
+
+.pp-sprite-black-dropdown {
+	width: 12px;
+	height: 7px;
+	background: url(../images/icons/black-dropdown-sprite.png) 0 0 no-repeat;
+}
+
+.pp-sprite-white-dropdown {
+	width: 12px;
+	height: 7px;
+	background: url(../images/icons/white-dropdown-sprite.png) 0 0 no-repeat;
+}
+
+.pp-sprite-calendar {
+	width: 23px;
+	height: 24px;
+	background: url(../images/icons/calendar-sprite.png) 0 0 no-repeat;
+}
+
+.pp-sprite-caution {
+	width: 32px;
+	height: 28px;
+	background: url(../images/icons/caution-sprite.png) 0 0 no-repeat;
+}
+
+.pp-sprite-close-window {
+	width: 18px;
+	height: 19px;
+	background: url(../images/icons/close-window-sprite.png) 0 0 no-repeat;
+	border: 0;
+	padding: 0;
+}
+
+.pp-sprite-copy {
+	width: 21px;
+	height: 25px;
+	background: url(../images/icons/copy-sprite.png) 0 0 no-repeat;
+}
+
+.pp-sprite-delete {
+	width: 22px;
+	height: 24px;
+	border: 0;
+	background: url(../images/icons/delete-sprite.png) 0 0 no-repeat;
+}
+
+.pp-sprite-edit {
+	width: 27px;
+	height: 27px;
+	background: url(../images/icons/edit-sprite.png) 0 0 no-repeat;
+}
+
+.pp-sprite-eyeball {
+	width: 37px;
+	height: 21px;
+	background: url(../images/icons/eyeball-sprite.png) 0 0 no-repeat;
+}
+
+.pp-sprite-red-alert {
+	width: 26px;
+	height: 23px;
+	background: url(../images/icons/red-alert-sprite.png) 0 0 no-repeat;
+}
+
+.pp-sprite-run {
+	width: 26px;
+	height: 26px;
+	background: url(../images/icons/run-sprite.png) 0 0 no-repeat;
+	border: 0;
+	padding: 0;
+}
+
+.dropdown-toggle {
+   	background: url(../images/icons/white-dropdown-sprite.png) right no-repeat;
+   	padding-right: 24px;  
+}
+
+/*** EMD Positive Pay Sprites ***/
+	
+
+
+	
+/*** Overload Bootstrap Navbar ***/
+
+/*
+.navbar ul {
+   clear:left;
+   float:left;
+   list-style:none;
+   margin:0;
+   padding:0;
+   position:relative;
+   left:50%;
+   text-align:center;
+}
+.navbar ul li {
+   display:block;
+   float:left;
+   list-style:none;
+   margin:0;
+   padding:0;
+   position:relative;
+   right:50%;
+}
+*/
+
+.navbar-default {
+background-image: none!important;
+ -webkit-box-shadow: none!important;
+     -moz-box-shadow: none!important;
+          box-shadow: none!important;
+  
+    text-shadow: none!important;
+  
+  -webkit-border-radius: 0!important;
+     -moz-border-radius: 0!important;
+          border-radius: 0!important;
+
+}
+
+.navbar-default .navbar-nav > li > a {
+background-image: none!important;
+ -webkit-box-shadow: none!important;
+     -moz-box-shadow: none!important;
+          box-shadow: none!important;
+  
+    text-shadow: none!important;
+  
+  -webkit-border-radius: 0!important;
+     -moz-border-radius: 0!important;
+          border-radius: 0!important;
+}
+
+.navbar-default {
+	background-color: #006B87;
+	border-color: #006B87;
+}
+
+.navbar-collapse {
+	background-color: #006B87;
+	border-color: #006B87;
+}
+
+.navbar-default p {
+	color:#fff;
+	margin-top:10px;
+}
+
+.navbar-default .navbar-brand {
+	color: #fff;
+}
+
+.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
+	color: #006B87;
+}
+
+.navbar-default .navbar-text {
+	color: #fff;
+}
+
+.navbar-nav > li > a {
+	color: #fff;
+}
+
+.navbar-nav > li > a:hover, .navbar-nav > li > a:focus {
+	color: #B8B8B8;
+}
+
+.navbar-nav > .active > a, .navbar-nav > .active > a:hover, .navbar-nav > .active > a:focus {
+	color: #006B87;
+	background-color: #fff;
+	height:100%;
+}
+
+.navbar-nav > .open > a, .navbar-nav > .open > a:hover, .navbar-nav > .open > a:focus {
+	color: #006B87;
+	background-color: #fff;
+	border-color:#fff;
+}
+
+.navbar-toggle {
+	border-color: #fff;
+}
+
+.navbar-toggle:hover, .navbar-toggle:focus {
+	background-color: #fff;
+}
+
+.navbar-toggle .icon-bar {
+	background-color: #fff;
+}
+
+.navbar-default .navbar-collapse,
+.navbar-default .navbar-form {
+	border-color: #fff;
+}
+
+.navbar-default .navbar-link {
+	color: #fff;
+}
+
+.navbar-default .navbar-link:hover {
+	color: #fff;
+}
+
+@media (max-width: 767px) {
+	.navbar-default .navbar-nav .open .dropdown-menu > li > a {
+		color: #fff;
+	}
+	.navbar-default .navbar-nav .open .dropdown-menu > li > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+		color: #006B87;
+	}
+	.navbar-default .navbar-nav .open .dropdown-menu > .active > a, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
+		color: #006B87;
+		background-color: #fff;
+	}
+}
+
+@media (max-width: 767px) {
+	.navbar-default .navbar-nav .open .dropdown-menu > li > a {
+		color: #fff;
+	}
+	.navbar-default .navbar-nav .open .dropdown-menu > li > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+		color: #006B87;
+	}
+	.navbar-default .navbar-nav .open .dropdown-menu > .active > a, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
+		color: #006B87;
+		background-color: #fff;
+	}
+}
+
+/* END Overload Bootstrap navbar */
+
+/* Overload Bootstrap modal */
+
+.modal-content .modal-body {
+	font-size: 14px;
+}
+
+.modal > div.modal-dialog {
+    margin-top: 10px !important;
+}
+
+/* END Overload Bootstrap modal */
+
+/* Overload Bootstrap panel */
+
+.panel-primary {
+	border-color: #000000;
+}
+
+.panel-primary .panel-heading { 
+	color: #006B87;
+	background-color: #ECECEC;
+	background-image: none;
+	border-color: #ECECEC;
+	height: 28px;
+}
+ 
+.panel-primary .panel-heading .panel-title {
+	margin-top: -5px;
+	font-size: 14px;
+}
+ 
+.panel-primary .panel-body {
+	font-size: 14px;
+}
+ 
+/* END Overload Bootstrap panel */
+ 
+/* Overload Bootstrap Form */
+ 
+.form-horizontal .form-control, .form-inline .form-control::-webkit-input-placeholder { /* WebKit browsers */
+    color: #666;
+}
+
+.form-horizontal .form-control, .form-inline .form-control:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: #666;
+}
+
+.form-horizontal .form-control, .form-inline .form-control::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: #666;
+}
+
+.form-horizontal .form-control, .form-inline .form-control:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color: #666;
+}
+ 
+.form-inline {
+	white-space: nowrap;
+} 
+
+/* END Overload Bootstrap Forms */
+
+/* Overload bootstrap tables */ 
+.table {
+	font-size: 14px;
+	margin-bottom: 0px;
+}
+ 
+.table > tbody > tr > td { 
+ 	vertical-align: middle;
+ 	border-color: black;
+}
+ 
+.table > thead:first-child > tr:first-child > th {
+ 	border: 1px solid #006B87;	
+}
+
+.table > thead > tr > th {
+	background-color: #006B87;
+ 	font-weight: normal;
+ 	color: #fff;
+ 	border-color: #006B87;
+ 	border: 1px solid #006B87;
+}
+
+td.right {
+	text-align: right;
+}
+
+td.center {
+	text-align: center;
+}
+
+@media print {
+	.table {
+		font-size: 14px;
+		margin-bottom: 0px;
+		-webkit-print-color-adjust: exact; 
+	}
+	 
+	.table > tbody > tr > td { 
+	 	vertical-align: middle;
+	 	border-color: black !important;
+	}
+	 
+	.table > thead:first-child > tr:first-child > th {
+	 	border: 1px solid #006B87 !important;	
+	}
+	
+	.table > thead > tr > th {
+		background-color: #006B87 !important;
+	 	font-weight: normal;
+	 	color: #fff !important;
+	 	border-color: #006B87 !important;
+	 	border: 1px solid #006B87 !important;
+	}
+	
+	.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+    	background-color: #F9F9F9 !important;
+	}
+}
+
+/*** END Overload Bootstrap  ***/
+
+/*** Positive Pay Style sheet ***/
+
+textarea {
+	padding-left: 4px;
+}
+
+input[type="text"], input[type="password"] {
+  	font-size: 14px;
+   	-webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+    border-radius: 0 !important;
+    padding-left: 4px;
+    padding-top: 2px;
+    padding-right: 2px;
+    padding-bottom: 2px;
+    border: 2px solid #D7D7D7;
+    color: #666666;
+    height: 34px;
+}
+
+/* override label */
+.label-large {
+	margin-bottom: 0px;
+}
+
+/* select drop-down */
+select {  
+	-webkit-appearance: none;
+ 	-webkit-box-shadow: none!important;
+   	-webkit-border-radius: 0!important;
+    -moz-appearance: none;
+    -moz-box-shadow: none!important;
+    -moz-border-radius: 0!important;
+  	font-size:14px;
+    outline: none; 
+    text-indent: 0.01px;
+    text-overflow: '';
+    appearance: none;    
+    box-shadow: none!important; 
+    text-shadow: none!important;
+    border-radius: 0!important;
+    padding-top: 2px;
+    padding-right: 28px; 
+    padding-left: 4px; 
+    padding-bottom: 2px;
+    background: url('../images/icons/black-dropdown-sprite.png') no-repeat center right 8px;
+    border: 2px solid #D7D7D7; 
+    height: 34px;
+}
+ 
+.selectbox select {  
+    z-index: 10;  
+    position: relative;  
+    border: none;  
+    background: none;  
+    outline: none;  
+    padding: 4px 12px 4px 32px;  
+    opacity: 0;  
+    -webkit-appearance: none;  
+    filter: alpha(opacity=0);  
+ }  
+ 
+ .selectbox {  
+    position: relative;  
+    display: inline-block;  
+    *display: inline;  
+    zoom: 1;  
+    border: 2px solid #D7D7D7;  
+    background: #fff;   
+    border-radius: 0px;
+    white-space: nowrap;
+} 
+ 
+.selecttext {  
+    z-index: 9;  
+    position: absolute;  
+    left: 5px;  
+    display: inline-block;  
+    *display: inline;  
+    zoom: 1;  
+    padding-top: 4px;  
+    background: transparent; 
+    color: #666;  
+    font-size: 14px;
+}  
+
+.date-input {
+	background-image: url('../images/icons/calendar-sprite.png');
+	background-repeat: no-repeat;
+	background-position: right bottom 5px;
+	padding-right: 26px;
+}
+
+/* END override select drop-down */
+ 
+/* Progress Bar Styling */
+ 
+progress, progress[role] {
+	appearance: none;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	border: 2px solid #666;
+	background-size: auto;
+	width: 400px;
+	height: 60px;
+}
+
+progress[role]:after {
+	background-image: none; 
+}
+
+progress[role] strong {
+	display: none;
+}
+
+progress,                          
+progress[role][aria-valuenow] {   
+   background: #fff !important; 
+}
+
+progress::-webkit-progress-bar {
+    background: #fff;
+}
+
+progress {
+    color: #006B87;
+    padding: 6px;
+}
+
+progress::-moz-progress-bar { 
+    background: #006B87;
+    padding: 6px;	
+}
+
+progress::-webkit-progress-value {
+    background: #006B87;
+    padding: 6px;
+}
+
+progress[aria-valuenow]:before {
+    background: #006B87;
+    padding: 6px;
+}
+
+/* END Progress Bar Styling */
+
+#wrap {
+	min-height: 100%;
+	overflow: hidden;
+}
+
+.header {
+	height: 122px;
+	width: 100%;
+	background-color: white;
+}
+
+.header .logo {
+	text-align: center;
+	height: 122px;
+	background-color: white;
+}
+
+.header .logo img {
+	margin-top: 15px;
+	width: 200px;
+	height: 75px;
+}
+
+.header .logout { 
+	text-align: right;
+	padding-top: 10px;
+}
+
+/* action buttons */
+.button {
+	height: 34px;
+	font-size: 14px;
+	font-weight: bold;
+	text-transform:uppercase;
+	color: #006B87;
+	padding: 10px 20px;
+	background: -moz-linear-gradient(
+		top,
+		#ffffff 0%,
+		#bfbfbf);
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(#ffffff),
+		to(#bfbfbf));
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	border-radius: 8px;
+	border: 0px solid #ffffff;
+	-moz-box-shadow:
+		0px 1px 3px rgba(000,000,000,0),
+		inset 0px -1px 0px rgba(255,255,255,0);
+	-webkit-box-shadow:
+		0px 1px 3px rgba(000,000,000,0),
+		inset 0px -1px 0px rgba(255,255,255,0);
+	box-shadow:
+		0px 1px 3px rgba(000,000,000,0),
+		inset 0px -1px 0px rgba(255,255,255,0);
+	text-shadow:
+		0px -1px 1px rgba(000,000,000,0.2),
+		0px 1px 0px rgba(255,255,255,0.3);
+}
+
+.action-icon :hover { 
+	cursor:pointer; 
+}
+
+#file {
+	display: none;
+}
+
+.dummyfile input[type="text"] {
+	width: 200px;
+}
+ 
+.highlight {
+	border: 2px solid red !important;
+}
+
+/* Simple Notification Boxes. */
+.greybox, .bluebox, .infobox, .errorbox {
+	padding: 5px;
+    font-size: 14px;
+    font-weight: none;
+	margin-bottom:5px;
+	display:inline-block;
+}
+
+.greybox {
+    background-color: #f7f7f7;
+    border: 1px solid #cccccc;
+    color: #333333;
+}
+
+.bluebox {
+    background-color: #eceff6;
+    border: 1px solid #d4dae8;
+    color: #333333;
+}
+
+.infobox {
+    background-color: #fff9d7;
+    border: 1px solid #e2c822;
+    color: #333333;
+}
+
+.errorbox {
+    background-color: #ffebe8;
+    border: 1px solid #dd3c10;
+    color: #333333;
+}
+
+/* Simple styles */
+
+.pp-ajax-loader {
+	background-image: url(../images/ajax/ajax-loader.gif);
+	background-repeat: no-repeat;
+	background-position-y: 4px;
+	padding-left: 20px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
+
+.pp-width-full {
+	width: 100%;
+}
+
+.pp-margin-bottom-small {
+	margin-bottom: 5px;
+}
+
+.pp-margin-top-small {
+	margin-top: 5px;
+}
+
+.panel-group {
+	margin-bottom: 6px;
+}
+
+.form-group {
+	margin-bottom: 6px;
+}
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+    height: 100%;
+}
+
+label.error {
+	font-weight: bold;
+	color: red;
+	padding: 2px 8px;
+	margin-top: 2px;
+}
+
+img.zoom {
+ 	float:right; 
+}
+
+.zoom { 
+	position:relative;
+}
+
+.loupe { 
+	background-color: #555;
+	background: rgba(0, 0, 0, 0.25);
+	border: 5px solid rgba(0, 0, 0, 0);
+	z-index: 1500;
+}
+
+.positivepay-popup {
+	width: 1200px;
+}
+
+.pp-text-wrap {
+	white-space: normal;
+}

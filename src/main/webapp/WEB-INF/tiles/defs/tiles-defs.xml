@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+	<!-- Start Default Layout -->
+	<definition name="site.common.page" template="/WEB-INF/tiles/layout/defaultLayout.jsp">
+		<put-attribute name="header" value="/WEB-INF/jsp/common/header.jsp" />
+		<put-attribute name="globalMessage" value="/WEB-INF/jsp/common/globalMessage.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/jsp/common/footer.jsp" />
+	</definition>
+	<!-- End Default Layout -->
+	
+	<!-- Start Login Page Definition -->
+	<definition name="site.default.login.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: Login" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/nomenu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/login.jsp" />
+	</definition>
+	<!-- End Login Page Definition -->
+	
+	<!-- Start DashBoard Page Definition -->
+	<definition name="site.view.admin.dashboard.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: View Dashboard" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/user/admindashboard.jsp" />
+	</definition>
+	<definition name="site.view.customer.dashboard.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: View Dashboard" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/user/customerdashboard.jsp" />
+	</definition>
+	<!-- End DashBoard Page Definition -->	
+	
+	<!-- Start Users Page Definition -->	
+	<definition name="site.manage.banks.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: Manage Banks" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/bank/managebanks.jsp" />
+	</definition>	
+	<definition name="site.bank.setup.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: Bank Setup" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/bank/banksetup.jsp" />
+	</definition>		
+	<definition name="site.manage.users.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: Manage Users" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/user/manageusers.jsp" />
+	</definition>
+	<definition name="site.add.user.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: Find User" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/user/addUser.jsp" />
+	</definition>	
+	<definition name="site.company.setup.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: Company Setup" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/company/companysetup.jsp" />
+	</definition>
+	<definition name="site.view.role.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: View User Roles" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/role/viewroles.jsp" />
+	</definition>
+	<!-- End Users Page Definition -->	
+	
+	<!-- Start Upload Preference Definition -->
+	<definition name="site.file.mapping.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: File Mapping" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/user/filemapping.jsp" />
+	</definition>
+	<definition name="site.file.management.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: File Management" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/user/filemanagement.jsp" />
+	</definition>
+	<definition name="site.multiple.file.management.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: File Management" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/user/newfilemanagement.jsp" />
+	</definition>
+	<definition name="site.multiple.file.management.ie.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: File Management" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/user/filemanagementIE.jsp" />
+	</definition>
+	<definition name="site.manual.entry.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: Manual Entry" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/user/manualEntry.jsp" />
+	</definition>
+	<definition name="site.customer.emulation.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: Customer Emulation" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/user/customerEmulation.jsp" />
+	</definition>
+	<!-- End Upload Preference Definition -->
+	
+	<!-- Start Reports & Extracts Page Definition-->
+	<definition name="site.report.view.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: View Reports And Extracts" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/report/viewreport.jsp" />
+	</definition>
+	<definition name="site.report.create.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: Create Report" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/report/createreport.jsp" />
+	</definition>
+	<definition name="site.report.edit.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: Edit Report" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/report/editreport.jsp" />
+	</definition>
+	<!-- End Reports & Extracts Page Definition-->
+	
+	<!-- Start Jobs Page Definition -->
+	<definition name="site.view.job.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: View Jobs" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/job/viewjob.jsp" />
+	</definition>
+	<definition name="site.create.job.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: Create Job" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/job/createjob.jsp" />
+	</definition>
+	<definition name="site.continue.job.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: Save And Continue Job" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/job/continuejob.jsp" />
+	</definition>
+	<definition name="site.save.job.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: Save And Complete Job" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/job/savejob.jsp" />
+	</definition>
+	<definition name="site.success.job.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: Success Job" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/job/successjob.jsp" />
+	</definition>	
+	<definition name="site.job.error.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: Display Errors" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/job/error.jsp" />
+	</definition>
+	<!-- End Jobs Page Definition -->
+	
+	<!-- Exception Resolution Page -->
+	<definition name="site.exception.resolution.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: Resolving Exceptions" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/user/exceptions.jsp" />
+	</definition>
+	
+	<!-- Payments / Items Page -->
+	<definition name="site.payments.items.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: Payments and Items" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/user/paymentsFilter.jsp" />
+	</definition>
+	
+	<definition name="site.payments.list.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: Payment List" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/user/paymentsAndItems.jsp" />
+	</definition>
+	
+	<definition name="site.payments.info.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: Payment Information" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/user/paymentsInfo.jsp" />
+	</definition>
+	
+	<!-- Start Error Page Definition -->
+	<definition name="site.default.error.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: Error Page" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/error/exception.jsp" />
+	</definition>
+	<definition name="site.404.error.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: Page Not Found" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/error/404.jsp" />
+	</definition>
+	<definition name="site.403.error.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: Unauthourized Access" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/error/403.jsp" />
+	</definition>
+	<definition name="site.500.error.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: Internal Server Error" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/error/500.jsp" />
+	</definition>
+	<!-- End Error Page Definition -->
+	
+	<!-- Start System Page Definition -->
+	<definition name="site.admin.system.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: System" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/system.jsp" />
+	</definition>
+	<!-- End System Page Definition -->
+	<!-- App logs -->
+	<definition name="site.app.log.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: Application Log" />
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/nomenu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/utility/applogs.jsp" />
+	</definition>
+	<definition name="site.app.version.page" extends="site.common.page">
+		<put-attribute name="title" value="Positive Pay :: Application Version" />
+		<put-attribute name="globalMessage" value="" />
+		<put-attribute name="menu" value="" />
+		<put-attribute name="body" value="/WEB-INF/jsp/utility/appversion.jsp" />
+	</definition>
+</tiles-definitions>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ChecksIssuedSubSubReport" whenNoDataType="AllSectionsNoDetail" whenResourceMissingType="Empty" pageWidth="802" pageHeight="555" orientation="Landscape" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="pageHeader"/>
+    <property name="net.sf.jasperreports.export.csv.exclude.origin.band.2" value="pageFooter"/>	
+    <property name="net.sf.jasperreports.export.csv.exclude.origin.band.3" value="lastPageFooter"/>	
+    <property name="net.sf.jasperreports.export.csv.record.delimiter" value="&#x0D;&#x0A;"/>
+    <property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="account_name" class="java.lang.String"/>
+	<parameter name="account_number" class="java.lang.String"/>
+	<parameter name="account_id" class="java.lang.Integer" isForPrompting="false"/>
+	<parameter name="in_as_of_date" class="java.util.Date"/>
+	<queryString>
+		<![CDATA[SELECT 
+                            account.number             AS account_number,
+                            account.name               AS account_name,
+                            check_detail.check_number  AS check_detail_check_number,
+                            check_detail.payee         AS check_detail_payee,
+                            check_detail.issue_date    AS check_detail_issue_date,
+                            check_detail.payment_status AS check_detail_payment_status,
+                            check_detail.issued_amount AS check_detail_check_amount,
+                            CASE check_detail.match_status
+                              WHEN 'UNMATCHED'
+                              THEN 'Not Matched'
+                              WHEN 'MATCHED'
+                              THEN 'Matched'
+                            END AS match_status
+                          FROM
+                            check_detail check_detail
+                            JOIN check_status check_status
+                              ON
+                                check_status.id = check_detail.check_status_id
+                            JOIN account account
+                              ON
+                                account.id = check_detail.account_id
+                                AND account.number = $P{account_number}
+                                AND check_detail.issue_date <= $P{in_as_of_date}
+                            WHERE
+                              check_status.name = 'issued'
+                              OR
+                              1 <= (
+                                      SELECT COUNT(check_detail_history.id)
+                                      FROM check_detail_history check_detail_history
+                                      JOIN check_status check_status_inner
+                                      ON
+                                        check_status_inner.id = check_detail_history.check_status_id
+                                        AND check_status_inner.name = 'issued'
+                                      WHERE
+                                        check_detail_history.check_detail_id = check_detail.id
+                                    )]]>
+	</queryString>
+	<field name="account_number" class="java.lang.String"/>
+	<field name="account_name" class="java.lang.String"/>
+	<field name="check_detail_check_number" class="java.lang.String"/>
+	<field name="check_detail_payee" class="java.lang.String"/>
+	<field name="check_detail_issue_date" class="java.sql.Timestamp"/>
+	<field name="check_detail_payment_status" class="java.lang.String"/>
+	<field name="check_detail_check_amount" class="java.math.BigDecimal"/>
+	<field name="match_status" class="java.lang.String"/>
+	<variable name="check_count" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{check_detail_check_number}]]></variableExpression>
+		<initialValueExpression><![CDATA[new Integer("0")]]></initialValueExpression>
+	</variable>
+	<variable name="issued_amount_sum" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{check_detail_check_amount}]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double("0.00")]]></initialValueExpression>
+	</variable>
+
+	<detail>
+		<band height="20" splitType="Immediate">
+			<textField>
+				<reportElement x="0" y="0" width="70" height="20" forecolor="#000000"/>
+				<textElement textAlignment="Right">
+					<font fontName="Verdana"/>
+				</textElement>
+				<textFieldExpression>
+					<![CDATA[($F{check_detail_check_number} == null) ? "N/A" : $F{check_detail_check_number}]]>
+				</textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="0" width="190" height="20" forecolor="#000000"/>
+				<textElement textAlignment="Left">
+					<font fontName="Verdana"/>
+				</textElement>
+				<textFieldExpression>
+					<![CDATA[($F{check_detail_payee} == null) ? "N/A" : $F{check_detail_payee}]]>
+				</textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="280" y="0" width="110" height="20" forecolor="#000000"/>
+				<textElement textAlignment="Center">
+					<font fontName="Verdana"/>
+				</textElement>
+				<textFieldExpression>
+					<![CDATA[($F{check_detail_issue_date} == null) ? "N/A" : new SimpleDateFormat("MM/dd/yyyy").format($F{check_detail_issue_date})]]>
+				</textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="400" y="0" width="140" height="20" forecolor="#000000"/>
+				<textElement textAlignment="Center">
+					<font fontName="Verdana"/>
+				</textElement>
+				<textFieldExpression>
+					<![CDATA[($F{match_status} == null) ? "N/A" : $F{match_status}]]>
+				</textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="550" y="0" width="130" height="20" forecolor="#000000"/>
+				<textElement textAlignment="Center">
+					<font fontName="Verdana"/>
+				</textElement>
+				<textFieldExpression>
+					<![CDATA[($F{check_detail_payment_status} == null) ? "N/A" : $F{check_detail_payment_status}]]>
+				</textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="690" y="0" width="110" height="20" forecolor="#000000"/>
+				<textElement textAlignment="Right">
+					<font fontName="Verdana"/>
+				</textElement>
+				<textFieldExpression>
+					<![CDATA[($F{check_detail_check_amount} == null) ? "N/A" : new java.text.DecimalFormat("$ #,##0.00").format($F{check_detail_check_amount})]]>
+				</textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<lastPageFooter>
+		<band height="22">
+			<textField>
+				<reportElement x="80" y="0" width="710" height="20" forecolor="#2090AA"/>
+				<textElement>
+					<font fontName="Verdana" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression>"Total for Account: " + $P{account_number} + " - " + $P{account_name} + ": [" + $V{check_count} + " Items - " + (($V{issued_amount_sum} == null) ? "N/A" : new java.text.DecimalFormat("$ #,##0.00").format($V{issued_amount_sum})) + "]"</textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+</jasperReport>
